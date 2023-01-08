@@ -1,11 +1,13 @@
 import ReactPaginate from "react-paginate";
 import { useState, useEffect } from "react";
-import './PaginatedItems.css';
+import './CustomersPaginatedItems.css';
+
+import { Link } from "react-router-dom";
 
 function Items({ currentItems }) {
   return (
     <>
-        <h2>Customers List</h2>
+        {/* <h2>Customers List</h2> */}
 
         <table className='table table-dark table-striped'>
             <thead>
@@ -13,15 +15,27 @@ function Items({ currentItems }) {
                     <th scope='col'>Fullname</th>
                     <th scope='col'>Image</th>
                     <th scope='col'>Phone</th>
+                    <th scope='col'>Invoices</th>
                 </tr>
             </thead>
             <tbody>
                 {currentItems.map((d)=> 
-                    <tr key={d.cust_id} onClick={() => alert(`Se presiono sobre el cliente: ${d.cust_fullname}`)}>
+                  <>
+                    <tr key={d.cust_id}>
                         <td>{d.cust_fullname}</td>
                         <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/></td>
                         <td>{d.cust_phone}</td>
+                        <td>
+                          <Link 
+                              to="/customer_invoices"
+                              state={{cust_id: d.cust_id, cust_fullname: d.cust_fullname}} 
+                          > 
+                                <i class="bi bi-list-task"></i>
+                          </Link>
+                        
+                        </td>
                     </tr>
+                  </>
                 )}
             </tbody>
         </table>
@@ -29,7 +43,7 @@ function Items({ currentItems }) {
   );
 }
 
-function PaginatedItems({ itemsPerPage }) {
+function CustomersPaginatedItems({ itemsPerPage }) {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -113,4 +127,4 @@ function PaginatedItems({ itemsPerPage }) {
   );
 }
 
-export default PaginatedItems;
+export default CustomersPaginatedItems;
