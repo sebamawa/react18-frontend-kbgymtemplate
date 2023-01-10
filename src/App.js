@@ -12,6 +12,7 @@ import { HomePage } from './pages/HomePage';
 import { CustomersPage } from './pages/CustomersPage';
 import { CustomerInvoicesPage } from './pages/CustomerInvoicesPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import CustomerDetailsPage from './pages/CustomerDetailsPage';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/customers" element={<CustomersPage />} />
+            <Route path="/customer-details/:cust_id" element={<CustomerDetailsPage />} />
             <Route path="/customer_invoices" element={<CustomerInvoicesPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

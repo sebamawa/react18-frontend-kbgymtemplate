@@ -15,7 +15,7 @@ function DisplayItems({ currentItems }) {
                     <th scope='col'>Fullname</th>
                     <th scope='col'>Image</th>
                     <th scope='col'>Phone</th>
-                    <th scope='col'>Invoices</th>
+                    <th scope='col'>Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,8 +26,8 @@ function DisplayItems({ currentItems }) {
                         <td>{d.cust_phone}</td>
                         <td>
                           <Link 
-                              to="/customer_invoices"
-                              state={{cust_id: d.cust_id, cust_fullname: d.cust_fullname, cust_phone: d.cust_phone, cust_image: d.cust_image}} 
+                              to={`/customer-details/${d.cust_id}`} 
+                              state={{customer: d}}
                           > 
                                 <i className="bi bi-list-task"></i>
                           </Link>
