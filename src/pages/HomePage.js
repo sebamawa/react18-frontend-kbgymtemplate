@@ -1,13 +1,15 @@
-// import React from 'react';
-import { Link } from 'react-router-dom';
+import bluegymImg from '../logo-bluefitness.png';
 
 export function HomePage() {
     return (
         <div>
-            <h1>[Home]</h1>
-            <nav>
-                <Link to="/customers">Customers</Link>
-            </nav>
+            <header className="App-header">
+                <h1>[Home]</h1>
+                {/* <nav>
+                    <Link to="/customers">Customers</Link>
+                </nav> */}
+                <img src={bluegymImg} className="App-logo-long" alt="logo"/> 
+            </header>
         </div>
     );
 }

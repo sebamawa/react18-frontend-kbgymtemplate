@@ -2,32 +2,44 @@
 import './App.css';
 // import { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
+import bluegymImg from './logo-bluefitness.png';
+
 // Router Components
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { CustomersPage } from './pages/CustomersPage';
-import { CustomerInvoices } from './pages/CustomerInvoices';
+import { CustomerInvoicesPage } from './pages/CustomerInvoicesPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 function App() {
 
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <PaginatedItems 
-  //         itemsPerPage={4} 
-  //       />
-  //     </header>
-  //   </div>
-  // );
-
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/customers" element={<CustomersPage />} />
-        <Route path="/customer_invoices" element={<CustomerInvoices />} />
-      </Routes>
-    </div> 
+    <div className='App'>
+      {/* Menu de navegación */}
+      <nav className="navbar navbar-expand-lg navbar-light p-2">
+        
+          <Link to="/" className="navbar-brand h3 text-white">Home</Link> 
+        
+          <Link to="/customers" className="navbar-brand h3 text-white">Customers</Link>
+
+          <img src={bluegymImg} className="App-logo navbar-nav ms-auto" alt="logo" />
+        
+      </nav>     
+      {/* Contenido de la página */}
+      <div className='App-header'>
+        <div className='container'>                  
+          {/* Route Configuration */}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/customers" element={<CustomersPage />} />
+            <Route path="/customer_invoices" element={<CustomerInvoicesPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div> 
+      </div>
+    </div>
   );
 }
 

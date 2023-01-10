@@ -1,11 +1,12 @@
-import CustomersPaginatedItems from '../components/CustomersPaginatedItems';
+import CustomersPaginated from '../components/CustomersPaginated';
 
-export function CustomersPage() {
+export function CustomersPage({cust_id}) {
     return (
         <>
             <header className="App-header">
-                <CustomersPaginatedItems 
+                <CustomersPaginated 
                     itemsPerPage={4} 
+                    cust_id={cust_id}
                 />
             </header>
         </>

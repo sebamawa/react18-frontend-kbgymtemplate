@@ -3,13 +3,24 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 8vmin;
+  pointer-events: none;
+}
+
+.App-logo-long {
+  height: 20vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo-long {
+    animation: App-logo-spin infinite 10s both;
   }
 }
 
@@ -25,7 +36,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #33FFF6;
 }
 
 @keyframes App-logo-spin {
@@ -36,6 +47,17 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar {
+  background-color: #3c80f5;
+  min-height: 8vh;
+  display: flex;
+}
+
+.App-link {
+  color: white;
+}
+
 
 
 

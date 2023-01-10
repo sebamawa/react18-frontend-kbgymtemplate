@@ -1,13 +1,13 @@
 import ReactPaginate from "react-paginate";
 import { useState, useEffect } from "react";
-import './CustomersPaginatedItems.css';
+import './CustomersPaginated.css';
 
 import { Link } from "react-router-dom";
 
-function Items({ currentItems }) {
+function DisplayItems({ currentItems }) {
   return (
     <>
-        {/* <h2>Customers List</h2> */}
+        {/* <h3>Customers List</h3>  */}
 
         <table className='table table-dark table-striped'>
             <thead>
@@ -20,7 +20,6 @@ function Items({ currentItems }) {
             </thead>
             <tbody>
                 {currentItems.map((d)=> 
-                  <>
                     <tr key={d.cust_id}>
                         <td>{d.cust_fullname}</td>
                         <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/></td>
@@ -28,14 +27,14 @@ function Items({ currentItems }) {
                         <td>
                           <Link 
                               to="/customer_invoices"
-                              state={{cust_id: d.cust_id, cust_fullname: d.cust_fullname}} 
+                              state={{cust_id: d.cust_id, cust_fullname: d.cust_fullname, cust_phone: d.cust_phone, cust_image: d.cust_image}} 
                           > 
-                                <i class="bi bi-list-task"></i>
+                                <i className="bi bi-list-task"></i>
                           </Link>
                         
                         </td>
                     </tr>
-                  </>
+                  
                 )}
             </tbody>
         </table>
@@ -43,7 +42,7 @@ function Items({ currentItems }) {
   );
 }
 
-function CustomersPaginatedItems({ itemsPerPage }) {
+function CustomersPaginated({ itemsPerPage }) {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -80,7 +79,8 @@ function CustomersPaginatedItems({ itemsPerPage }) {
         const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=true&page_number=${currentPage}&page_size=${itemsPerPage}`);
         const json = await response.json();
         console.log(json);
-        setCurrentCustomers(json.SDTCustomers);
+        setCurrentCustomers(json.SDTCustomers); // toma tiempo
+        // console.log(currentCustomers); // imprime [] la primera vez
         setTotalPages(json.TotalPages);
         setLoading(false);
       }
@@ -88,7 +88,7 @@ function CustomersPaginatedItems({ itemsPerPage }) {
     } catch (error) {
       console.log(error);
     }
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -99,7 +99,7 @@ function CustomersPaginatedItems({ itemsPerPage }) {
     <>
     { loading ? <h1>{'Loading Customers'}</h1> :
         <>
-            <Items currentItems={currentCustomers} /> 
+            <DisplayItems currentItems={currentCustomers} /> 
         </>
     }
         <ReactPaginate
@@ -127,4 +127,4 @@ function CustomersPaginatedItems({ itemsPerPage }) {
   );
 }
 
-export default CustomersPaginatedItems;
+export default CustomersPaginated;
