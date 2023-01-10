@@ -5,7 +5,7 @@ export function CustomersPage({cust_id}) {
         <>
             <header className="App-header">
                 <CustomersPaginated 
-                    itemsPerPage={4} 
+                    itemsPerPage={5} 
                     cust_id={cust_id}
                 />
             </header>

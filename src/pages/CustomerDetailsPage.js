@@ -4,8 +4,8 @@ import { CustomerInvoicesPage } from "./CustomerInvoicesPage";
 function CustomerDetailsPage() {
     const parms = useParams();
     const location = useLocation();
+    const { customer } = location.state;        
 
-    const { customer } = location.state;
     // console.log(parms);
 
     return (
