@@ -76,9 +76,9 @@ function CustomersPaginated({ itemsPerPage }) {
     try {
       const fetchCustomers = async () => {
         setLoading(true);
-        const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=true&page_number=${currentPage}&page_size=${itemsPerPage}`);
+        const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=false&page_number=${currentPage}&page_size=${itemsPerPage}`);
         const json = await response.json();
-        // console.log(json);
+        console.log(json);
         setCurrentCustomers(json.SDTCustomers); // toma tiempo
         // console.log(currentCustomers); // imprime [] la primera vez
         setTotalPages(json.TotalPages);
