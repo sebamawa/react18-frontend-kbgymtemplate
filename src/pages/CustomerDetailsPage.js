@@ -11,7 +11,7 @@ function CustomerDetailsPage() {
     return (
         <>
             <div className="row">
-                <div className="col-3">
+                <div className="col-3 mt-3">
                     {/* Customer Card */}
                     <div className="card">
                         <img src={customer.cust_image}  alt={customer.cust_fullname}/>

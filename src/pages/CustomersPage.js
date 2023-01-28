@@ -3,12 +3,12 @@ import CustomersPaginated from '../components/CustomersPaginated';
 export function CustomersPage({cust_id}) {
     return (
         <>
-            <header className="App-header">
+            <div>
                 <CustomersPaginated 
                     itemsPerPage={5} 
                     cust_id={cust_id}
                 />
-            </header>
+            </div>
         </>
     );
 }
