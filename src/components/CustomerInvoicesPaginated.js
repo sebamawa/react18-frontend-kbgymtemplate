@@ -11,10 +11,6 @@ function DisplayItems({ currentItems }) {
 
     return(
         <>
-            <div className="row">
-               <div className="col-10"><h3>Invoices List</h3></div> 
-               <div className="col-2"><i class="bi bi-plus-circle" onClick={() => alert("aun no se ingresan facturas")}></i></div>
-            </div>
             <table className="table table-dark table striped">
                 <thead>
                     <tr>
@@ -41,18 +37,24 @@ function DisplayItems({ currentItems }) {
 
 function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
     const [currentInvoices, setCurrentInvoices] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loadingInvoices, setLoadingInvoices] = useState(false);
+    // intercambia entre la lista de facturas y el formulario para añadir una factura
+    const [swapCustomerInvoicesAddInvoice, setSwapCustomerInvoicesAddInvoice] = useState(false);
+
+    const swapInvoicesAddInvoice = () => {
+        setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice);
+    }
 
     useEffect(() => {
 
         try {
             const fetchInvoices = async () => {
-              setLoading(true);
+              setLoadingInvoices(true);
               const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/List?cust_id=${cust_id}&page_number=1&page_size=${itemsPerPage}`);
               const json = await response.json();
               console.log(json);
               setCurrentInvoices(json.SDTInvoices); 
-              setLoading(false);
+              setLoadingInvoices(false);
             }
             fetchInvoices();
           } catch (error) {
@@ -61,12 +63,22 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
     }, []);
 
     return (
-        <>        
-            { loading ? <h1>{'Loading Invoices'}</h1> :
-                <>
-                    <DisplayItems currentItems={currentInvoices} /> 
-                </>
-            }
+        <>    
+            <div className="row">
+               <div className="col-10"><h3>{!swapCustomerInvoicesAddInvoice ? "Invoices List" : "Add Invoice"}</h3></div> 
+               <div className="col-2"><i class={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => swapInvoicesAddInvoice()}></i></div>
+            </div> 
+            {swapCustomerInvoicesAddInvoice 
+                ? <h1>{'Form to add invoice'}</h1> 
+                :       
+                loadingInvoices ? <h1>{'Loading Invoices'}</h1> :
+                    <>
+                        <DisplayItems 
+                            currentItems={currentInvoices} 
+                        /> 
+                    </>
+                
+            } 
         </>
     );
 }
