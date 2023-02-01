@@ -41,10 +41,6 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
     // intercambia entre la lista de facturas y el formulario para añadir una factura
     const [swapCustomerInvoicesAddInvoice, setSwapCustomerInvoicesAddInvoice] = useState(false);
 
-    const swapInvoicesAddInvoice = () => {
-        setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice);
-    }
-
     useEffect(() => {
 
         try {
@@ -66,7 +62,7 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
         <>    
             <div className="row">
                <div className="col-10"><h3>{!swapCustomerInvoicesAddInvoice ? "Invoices List" : "Add Invoice"}</h3></div> 
-               <div className="col-2"><i class={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => swapInvoicesAddInvoice()}></i></div>
+               <div className="col-2"><i class={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}></i></div>
             </div> 
             {swapCustomerInvoicesAddInvoice 
                 ? <h1>{'Form to add invoice'}</h1> 
