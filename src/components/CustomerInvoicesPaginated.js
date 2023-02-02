@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AddInvoiceCustomerForm from "./AddInvoiceCustomerForm";
 
 function DisplayItems({ currentItems }) {
 
@@ -61,11 +62,11 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
     return (
         <>    
             <div className="row">
-               <div className="col-10"><h3>{!swapCustomerInvoicesAddInvoice ? "Invoices List" : "Add Invoice"}</h3></div> 
-               <div className="col-2"><i class={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}></i></div>
+               <div className="col-8"><h3>{!swapCustomerInvoicesAddInvoice ? "Invoices List" : "Add Invoice"}</h3></div> 
+               <div className="col-4"><i role="button" className={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}></i>{!swapCustomerInvoicesAddInvoice ? " Add Invoice" : " Invoices List"}</div>
             </div> 
             {swapCustomerInvoicesAddInvoice 
-                ? <h1>{'Form to add invoice'}</h1> 
+                ? <AddInvoiceCustomerForm /> 
                 :       
                 loadingInvoices ? <h1>{'Loading Invoices'}</h1> :
                     <>
