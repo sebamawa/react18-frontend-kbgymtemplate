@@ -2,8 +2,10 @@ import { useState } from "react";
 
 function AddinvoiceCustomerForm() {
 
-    const [inv_date, setInv_date] = useState("");
+    const [inv_date, setInv_date] = useState("2023-02-03");
     const [inv_total, setInv_total] = useState(0);
+
+    console.log(inv_date);
 
     const submit = e => {}
 
