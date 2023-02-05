@@ -18,6 +18,7 @@ function App() {
 
   return (
     <div className='App'>
+
       {/* Menu de navegación */}
       <nav className="navbar navbar-expand-lg navbar-light p-2">
         

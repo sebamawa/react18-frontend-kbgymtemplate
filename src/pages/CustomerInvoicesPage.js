@@ -7,15 +7,16 @@ export function CustomerInvoicesPage () {
     const location = useLocation();
     const { customer } = location.state;
 
+    // console.log(customer);
+
     return (
         <>
          {/* <header className="App-header"> */}
-    
-
              
                     <CustomerInvoicesPaginated 
                         itemsPerPage={4}
-                        cust_id={customer.cust_id}
+                        // cust_id={customer.cust_id}
+                        customer = {customer}
                     />
              
           

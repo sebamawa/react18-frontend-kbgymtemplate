@@ -5,7 +5,7 @@ function DisplayItems({ currentItems }) {
 
     // to render the month name
     const months = ["Enero", "Febrero", "Merzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const getMonth = (dateString) => { // dateString: "XXXX-XX-XX"
+    const getMonth = (dateString) => { // dateString: "YYYY-MM-DD"
         const monthString = months[parseInt(dateString.substring(5, 7)) - 1];
         return monthString;
     } 
@@ -36,7 +36,7 @@ function DisplayItems({ currentItems }) {
     );
 }
 
-function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
+function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
     const [currentInvoices, setCurrentInvoices] = useState([]);
     const [loadingInvoices, setLoadingInvoices] = useState(false);
     // intercambia entre la lista de facturas y el formulario para añadir una factura
@@ -47,7 +47,7 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
         try {
             const fetchInvoices = async () => {
               setLoadingInvoices(true);
-              const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/List?cust_id=${cust_id}&page_number=1&page_size=${itemsPerPage}`);
+              const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/List?cust_id=${customer.cust_id}&page_number=1&page_size=${itemsPerPage}`);
               const json = await response.json();
               console.log(json);
               setCurrentInvoices(json.SDTInvoices); 
@@ -66,7 +66,7 @@ function CustomerInvoicesPaginated({ cust_id, itemsPerPage }) {
                <div className="col-4"><i role="button" className={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}></i>{!swapCustomerInvoicesAddInvoice ? " Add Invoice" : " Invoices List"}</div>
             </div> 
             {swapCustomerInvoicesAddInvoice 
-                ? <AddInvoiceCustomerForm /> 
+                ? <AddInvoiceCustomerForm customer={customer} /> 
                 :       
                 loadingInvoices ? <h1>{'Loading Invoices'}</h1> :
                     <>

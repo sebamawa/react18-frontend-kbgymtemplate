@@ -4,9 +4,7 @@ import { CustomerInvoicesPage } from "./CustomerInvoicesPage";
 function CustomerDetailsPage() {
     const parms = useParams();
     const location = useLocation();
-    const { customer } = location.state;        
-
-    // console.log(parms);
+    const { customer } = location.state; 
 
     return (
         <>
@@ -24,7 +22,8 @@ function CustomerDetailsPage() {
                 <div className="col-7">
                     {/* Customer Invoices */}
                     <CustomerInvoicesPage
-                        cust_id={parms.cust_id}
+                        // cust_id={parms.cust_id}
+                        customer = {customer}
                     />
                 </div>
                 <div className="col-2">
