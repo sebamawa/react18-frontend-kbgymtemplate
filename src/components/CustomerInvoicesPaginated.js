@@ -49,7 +49,7 @@ function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
               setLoadingInvoices(true);
               const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/List?cust_id=${customer.cust_id}&page_number=1&page_size=${itemsPerPage}`);
               const json = await response.json();
-              console.log(json);
+              // console.log(json);
               setCurrentInvoices(json.SDTInvoices); 
               setLoadingInvoices(false);
             }
