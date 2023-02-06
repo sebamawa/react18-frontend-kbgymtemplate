@@ -80,10 +80,10 @@ function AddinvoiceCustomerForm({customer}) {
                             </select>    
                         </div>
                         <div className="col-sm-3">
-                            <small>Precio: $</small>{selectedService.serv_price} 
+                            <small>Precio: $ </small>{selectedService.serv_price} 
                         </div>
                         <div className="col-sm-2">
-                            <i className="bi bi-plus-circle" role="button" onClick={() => {
+                            <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} role="button" onClick={() => {
                                 //const newItem = services.find((service) => service.serv_id === selectedServiceId);
                                 addItemInvoice(selectedService);
                             }}></i>
@@ -101,7 +101,7 @@ function AddinvoiceCustomerForm({customer}) {
                                     <tr>
                                         <td>{item.serv_descrip}</td>
                                         <td>{item.serv_price}</td>
-                                        <td><i class="bi bi-x-circle"></i></td>
+                                        <td onClick={() => setItemsInvoice(itemsInvoice.filter(s => s.serv_id != item.serv_id))}><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}}></i></td>
                                     </tr>
                                 );
                             })
