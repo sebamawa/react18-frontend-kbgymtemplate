@@ -83,7 +83,7 @@ function AddinvoiceCustomerForm({customer}) {
                             Precio
                         </div>
                         <div className="col-sm-2">
-                            <i className="bi bi-plus-circle" role="button" onClick={() => addItemInvoice({"cuota":"cuota"})}></i>
+                            <i className="bi bi-plus-circle" role="button" onClick={() => addItemInvoice({"descrip":services[2].serv_descrip})}></i>
                         </div>                            
                     </div>                         
                </fieldset>            
@@ -96,7 +96,7 @@ function AddinvoiceCustomerForm({customer}) {
                             itemsInvoice.map((item) => {
                                 return (
                                     <tr>
-                                        <td>{item.cuota}</td>
+                                        <td>{item.descrip}</td>
                                         <td>1200</td>
                                     </tr>
                                 );
