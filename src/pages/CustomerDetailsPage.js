@@ -15,6 +15,7 @@ function CustomerDetailsPage() {
                         <img src={customer.cust_image}  alt={customer.cust_fullname}/>
                         <div className={"card-body"}>
                             <h5 className={"card-title text-black"}>{customer.cust_fullname}</h5> 
+                            <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                             <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6> 
                         </div>            
                     </div>

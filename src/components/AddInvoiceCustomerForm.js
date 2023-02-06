@@ -3,11 +3,19 @@ import { useState, useEffect } from "react";
 function AddinvoiceCustomerForm({customer}) {
 
     const [services, setServices] = useState([]);
+    const [loadingServices, setLoadingServices] = useState(false);
+    const [selectedServiceId, setSelectedServiceId] = useState(0);
+
+    const[itemsInvoice, setItemsInvoice] = useState([]);
 
     const today = new Date().toISOString().substring(0, 10);
 
     const [inv_date, setInv_date] = useState(today);
     // const [inv_total, setInv_total] = useState(0);
+
+    const addItemInvoice = (newItem) => {
+        setItemsInvoice([...itemsInvoice, newItem]);
+    }
 
     const submit = e => {
         alert("Aun no se ingresan facturas...");
@@ -16,15 +24,14 @@ function AddinvoiceCustomerForm({customer}) {
     useEffect(() => {
          (async() => {   
           try {
-            // setLoading(true);
+            setLoadingServices(true);
             
             const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/ServicesAPI/List?serv_type_id=2`);
            
             const json = await response.json();
             setServices(json.SDTServices);
-            // console.log(json.SDTServices);
-            // setLoading(false);
-            // setErrorMsg("");
+            setSelectedServiceId(json.SDTServices[0].serv_id);
+            setLoadingServices(false);
           } catch (error) {
             console.log(error);
             // setErrorMsg(`Un error ha ocurrido, pruebe recargar la página. 
@@ -35,31 +42,69 @@ function AddinvoiceCustomerForm({customer}) {
 
     return (
         <>
+
             <form onSubmit={submit}>
-                    
-                <div className="row">
-                    <div className="form-group col-md-6">
-                        <label for="inv_date"><small>Date</small></label>
-                        <input type="date" className="form-control" id="inv_date" name="inv_date" value={inv_date} onChange={e => setInv_date(e.target.value)}/>
+                <div class="form-group row">
+                    <label for="inv_date" class="col-sm-2 col-form-label"><small>Date*:</small></label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="inv_date" value={inv_date} onChange={e => setInv_date(e.target.value)}/>
                     </div>
                 </div>
                 <hr/>
-                <fieldset class="col-form-label">
-                    <legend>Customer Data*</legend>
-                    <div className="row">
-                        <div className="form-group col-md-6">
-                            <label for="cust"><small>Customer Name*</small></label>
-                            <input type="input" className="form-control" id="cust" value={customer.cust_fullname} required disabled/>
-                        </div>                    
-                        <div className="form-group col-md-6">
-                            <label for="cust_identification"><small>Identification*</small></label>
-                            <input type="input" className="form-control" id="cust_identification" value={customer.cust_identification} disabled/>                    
-                        </div>
+                <div class="form-group row">
+                    <label for="cust_fullname" className="col-sm-2 col-form-label"><small>Name*:</small></label>
+                    <div className="col-sm-4">
+                        <input type="text" readOnly className="form-control-plaintext text-light" id="cust_fullname" defaultValue={customer.cust_fullname}/>
                     </div>
-                    <hr/>
-                </fieldset>
-            </form>
 
+                    <label for="cust_identification" className="col-sm-3 col-form-label"><small>Identification*:</small></label>
+                    <div className="col-sm-3">
+                        <input type="text" readonly className="form-control-plaintext text-light" id="cust_identification" defaultValue={customer.cust_identification}/>
+                    </div>                    
+                </div> 
+                <hr/>    
+                <fieldset className="col-form-label">
+                    <legend>Add Items</legend>
+                    <div className="form-group row">
+                        
+                        <label for="serv_id" className="col-sm-2 col-form-label"><small>Service*:</small></label>
+                        <div className="col-sm-5">
+                            <select className="form-select" aria-label=".form-select-sm example" id="serv_id" onChange={e => {setSelectedServiceId(parseInt(e.target.value))}}>
+                                {loadingServices ? <option value="" readonly>Loading...</option> :
+                                
+                                services.map((service) => {
+                                    return (
+                                        <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
+                                    );
+                                })}
+                            </select>    
+                        </div>
+                        <div className="col-sm-3">
+                            Precio
+                        </div>
+                        <div className="col-sm-2">
+                            <i className="bi bi-plus-circle" role="button" onClick={() => addItemInvoice({"cuota":"cuota"})}></i>
+                        </div>                            
+                    </div>                         
+               </fieldset>            
+            </form> 
+
+            <div className="row">
+                <table className='table table-dark table-striped'>
+                    <tbody>
+                        {
+                            itemsInvoice.map((item) => {
+                                return (
+                                    <tr>
+                                        <td>{item.cuota}</td>
+                                        <td>1200</td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>       
 
             {/* <input type="date" name="inv_date" value={inv_date} onChange={e => setInv_date(e.target.value)} />
             <button type="button" onClick={submit} className="btn btn-primary">Submit</button> */}
