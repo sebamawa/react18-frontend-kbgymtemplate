@@ -4,7 +4,7 @@ function AddinvoiceCustomerForm({customer}) {
 
     const [services, setServices] = useState([]);
     const [loadingServices, setLoadingServices] = useState(false);
-    const [selectedServiceId, setSelectedServiceId] = useState(0);
+    const [selectedService, setSelectedService] = useState(0);
 
     const[itemsInvoice, setItemsInvoice] = useState([]);
 
@@ -30,7 +30,7 @@ function AddinvoiceCustomerForm({customer}) {
            
             const json = await response.json();
             setServices(json.SDTServices);
-            setSelectedServiceId(json.SDTServices[0].serv_id);
+            setSelectedService(json.SDTServices[0]);
             setLoadingServices(false);
           } catch (error) {
             console.log(error);
@@ -69,7 +69,7 @@ function AddinvoiceCustomerForm({customer}) {
                         
                         <label for="serv_id" className="col-sm-2 col-form-label"><small>Service*:</small></label>
                         <div className="col-sm-5">
-                            <select className="form-select" aria-label=".form-select-sm example" id="serv_id" onChange={e => {setSelectedServiceId(parseInt(e.target.value))}}>
+                            <select className="form-select" aria-label=".form-select-sm example" id="serv_id" onChange={e => {setSelectedService(services.find((serv) => serv.serv_id === parseInt(e.target.value)) )}}>
                                 {loadingServices ? <option value="" readonly>Loading...</option> :
                                 
                                 services.map((service) => {
@@ -80,10 +80,13 @@ function AddinvoiceCustomerForm({customer}) {
                             </select>    
                         </div>
                         <div className="col-sm-3">
-                            Precio
+                            <small>Precio: $</small>{selectedService.serv_price} 
                         </div>
                         <div className="col-sm-2">
-                            <i className="bi bi-plus-circle" role="button" onClick={() => addItemInvoice({"descrip":services[2].serv_descrip})}></i>
+                            <i className="bi bi-plus-circle" role="button" onClick={() => {
+                                //const newItem = services.find((service) => service.serv_id === selectedServiceId);
+                                addItemInvoice(selectedService);
+                            }}></i>
                         </div>                            
                     </div>                         
                </fieldset>            
@@ -96,8 +99,9 @@ function AddinvoiceCustomerForm({customer}) {
                             itemsInvoice.map((item) => {
                                 return (
                                     <tr>
-                                        <td>{item.descrip}</td>
-                                        <td>1200</td>
+                                        <td>{item.serv_descrip}</td>
+                                        <td>{item.serv_price}</td>
+                                        <td><i class="bi bi-x-circle"></i></td>
                                     </tr>
                                 );
                             })
