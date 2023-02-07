@@ -6,7 +6,8 @@ function AddinvoiceCustomerForm({customer}) {
     const [loadingServices, setLoadingServices] = useState(false);
     const [selectedService, setSelectedService] = useState(0);
 
-    const[itemsInvoice, setItemsInvoice] = useState([]);
+    const [itemsInvoice, setItemsInvoice] = useState([]);
+    const [countItemsInvoice, setCountItemsInvoice] = useState(0);
 
     const today = new Date().toISOString().substring(0, 10);
 
@@ -14,7 +15,8 @@ function AddinvoiceCustomerForm({customer}) {
     // const [inv_total, setInv_total] = useState(0);
 
     const addItemInvoice = (newItem) => {
-        setItemsInvoice([...itemsInvoice, newItem]);
+        setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
+        setItemsInvoice([...itemsInvoice, {...newItem, id: countItemsInvoice}]); // agrego id de linea a item
     }
 
     const submit = e => {
@@ -101,7 +103,7 @@ function AddinvoiceCustomerForm({customer}) {
                                     <tr>
                                         <td>{item.serv_descrip}</td>
                                         <td>{item.serv_price}</td>
-                                        <td onClick={() => setItemsInvoice(itemsInvoice.filter(s => s.serv_id != item.serv_id))}><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}}></i></td>
+                                        <td><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}}></i></td>
                                     </tr>
                                 );
                             })
