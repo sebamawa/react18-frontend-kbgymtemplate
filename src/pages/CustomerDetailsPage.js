@@ -23,7 +23,7 @@ function CustomerDetailsPage() {
                             <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                             <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
                             <div class="form-check">
-                                <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active}/>
+                                <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} onChange={() => setCustActive(!cust_active)}/>
                                 <label className="form-check-label text-black" for="cust_active">
                                     <h6>Is active?</h6>
                                 </label>
