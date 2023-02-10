@@ -19,7 +19,7 @@ function CustomerDetailsPage() {
             fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus/`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                // mode: 'cors',
+                // mode: 'no-cors',
                 body: JSON.stringify({
                     cust_id: customer.cust_id,
                     cust_active: customer.cust_active
