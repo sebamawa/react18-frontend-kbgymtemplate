@@ -1,6 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import { CustomerInvoicesPage } from "./CustomerInvoicesPage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function CustomerDetailsPage() {
     const parms = useParams();
@@ -9,7 +9,32 @@ function CustomerDetailsPage() {
 
     const [cust_active, setCustActive] = useState(customer.cust_active);
 
-    console.log(customer);
+    useEffect(() => {
+
+         (async() => {   
+          try {
+            //setLoading(true);
+    
+            // const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus?cust_id=${customer.cust_id}&cust_active=${cust_active}`);
+            fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus/`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                // mode: 'cors',
+                body: JSON.stringify({
+                    cust_id: customer.cust_id,
+                    cust_active: customer.cust_active
+                })
+            });
+
+            // const json = await response.json();
+            //setLoading(false);
+          } catch (error) {
+            console.log(error);
+            // setErrorMsg(`Un error ha ocurrido, pruebe recargar la página. 
+            //              Descripción: ${error.message}`);
+          }  
+          })(); 
+      }, [cust_active]);
 
     return (
         <>
