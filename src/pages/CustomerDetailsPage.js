@@ -8,12 +8,17 @@ function CustomerDetailsPage() {
     const { customer } = location.state; 
 
     const [cust_active, setCustActive] = useState(customer.cust_active);
+    const [firstRender, setFirstRender] = useState(false);
 
     useEffect(() => {
 
          (async() => {   
           try {
             //setLoading(true);
+            if (!firstRender) {
+                setFirstRender(true);
+                return;
+            }
     
             // const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus?cust_id=${customer.cust_id}&cust_active=${cust_active}`);
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus`, {
@@ -28,8 +33,6 @@ function CustomerDetailsPage() {
                     cust_active: cust_active
                 })
             });
-
-            // console.log(response);
 
             const json = await response.json();
             console.log(json);
