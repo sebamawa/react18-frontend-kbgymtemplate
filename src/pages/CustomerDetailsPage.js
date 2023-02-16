@@ -16,17 +16,23 @@ function CustomerDetailsPage() {
             //setLoading(true);
     
             // const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus?cust_id=${customer.cust_id}&cust_active=${cust_active}`);
-            fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus/`, {
+            const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                // mode: 'no-cors',
+                // crossDomain: true,
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                //mode: 'no-cors',
                 body: JSON.stringify({
                     cust_id: customer.cust_id,
-                    cust_active: customer.cust_active
+                    cust_active: cust_active
                 })
             });
 
-            // const json = await response.json();
+            // console.log(response);
+
+            const json = await response.json();
+            console.log(json);
             //setLoading(false);
           } catch (error) {
             console.log(error);
