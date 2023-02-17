@@ -3,12 +3,13 @@ import { CustomerInvoicesPage } from "./CustomerInvoicesPage";
 import { useState, useEffect } from "react";
 
 function CustomerDetailsPage() {
-    const parms = useParams();
+    // const parms = useParams();
     const location = useLocation();
     const { customer } = location.state; 
 
     const [cust_active, setCustActive] = useState(customer.cust_active);
-    const [firstRender, setFirstRender] = useState(false);
+    const [firstRender, setFirstRender] = useState(false); 
+    const [loadingChangeStatus, setLoadingChangeStatus] = useState(false);
 
     useEffect(() => {
 
@@ -19,8 +20,9 @@ function CustomerDetailsPage() {
                 setFirstRender(true);
                 return;
             }
-    
-            // const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus?cust_id=${customer.cust_id}&cust_active=${cust_active}`);
+
+            setLoadingChangeStatus(true);
+            
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/UpdateStatus`, {
                 method: 'PUT',
                 // crossDomain: true,
@@ -36,9 +38,12 @@ function CustomerDetailsPage() {
 
             const json = await response.json();
             console.log(json);
-            //setLoading(false);
+            alert(`Status changed`);
+            
+            setLoadingChangeStatus(false);
           } catch (error) {
             console.log(error);
+            setCustActive(!cust_active);
             // setErrorMsg(`Un error ha ocurrido, pruebe recargar la página. 
             //              Descripción: ${error.message}`);
           }  
@@ -57,10 +62,29 @@ function CustomerDetailsPage() {
                             <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                             <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
                             <div class="form-check">
-                                <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} onChange={() => setCustActive(!cust_active)}/>
+                                
+                                <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 
+                                    onClick={() => {
+                                        const confirmation = window.confirm(`Are you sure you want to change the status of ${customer.cust_fullname}?`);
+                                        if (confirmation)
+                                            // setConfirmChangeStatus(confirmation);
+                                            setCustActive(!cust_active);
+                                    }}
+                                    onChange={() => {
+                                        // setCustActive(!cust_active);
+                                        // alert(`Status changed`);
+                                    }}
+                                />
+                                {!loadingChangeStatus ? 
+                                
+                                    <label className="form-check-label text-black" for="cust_active">
+                                        <h6>Is active?</h6>
+                                    </label>
+                                :
                                 <label className="form-check-label text-black" for="cust_active">
-                                    <h6>Is active?</h6>
-                                </label>
+                                <h6>Loading ...</h6>
+                            </label>
+                                }
                             </div>            
                         </div>
                     </div>
