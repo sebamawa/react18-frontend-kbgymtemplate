@@ -161,8 +161,8 @@ function CustomersPaginated({ itemsPerPage }) {
                 setActiveCustomersBool(event.target.value);
                 setCurrentPage(1); // to avoid pagination errors
                 }}>
-                <option value="true">Activos</option>
-                <option value="false">Inactivos</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
             </select>
           </div>          
         </div> 
