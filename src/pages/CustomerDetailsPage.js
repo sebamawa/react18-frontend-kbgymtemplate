@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 function CustomerDetailsPage() {
     // const parms = useParams();
     const location = useLocation();
-    const { customer } = location.state; 
+    const { customer } = location.state;
 
     const [cust_active, setCustActive] = useState(customer.cust_active);
     const [firstRender, setFirstRender] = useState(false); 
@@ -38,12 +38,11 @@ function CustomerDetailsPage() {
 
             const json = await response.json();
             console.log(json);
-            alert(`Status changed`);
             
             setLoadingChangeStatus(false);
           } catch (error) {
             console.log(error);
-            setCustActive(!cust_active);
+            alert(error);
             // setErrorMsg(`Un error ha ocurrido, pruebe recargar la página. 
             //              Descripción: ${error.message}`);
           }  
@@ -65,7 +64,8 @@ function CustomerDetailsPage() {
                                 
                                 <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 
                                     onClick={() => {
-                                        const confirmation = window.confirm(`Are you sure you want to change the status of ${customer.cust_fullname}?`);
+                                        const msg = cust_active ? `inactive` : `active`;
+                                        const confirmation = window.confirm(`Are you sure you want to change the status of ${customer.cust_fullname} to ${msg}?`);
                                         if (confirmation)
                                             // setConfirmChangeStatus(confirmation);
                                             setCustActive(!cust_active);
@@ -81,8 +81,10 @@ function CustomerDetailsPage() {
                                         <h6>Is active?</h6>
                                     </label>
                                 :
-                                <label className="form-check-label text-black" for="cust_active">
-                                <h6>Loading ...</h6>
+                                <label className="form-check-label text-warning" for="cust_active">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
                             </label>
                                 }
                             </div>            

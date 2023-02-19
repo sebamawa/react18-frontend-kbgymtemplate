@@ -22,13 +22,13 @@ function DisplayItems({ currentItems }) {
                 </thead>
                 <tbody>
                     {currentItems.map((d) =>
-                     <>
+                     
                         <tr key={d.inv_id}>
                             <td>{d.inv_date}</td>
                             <td>{getMonth(d.inv_date)}</td>
                             <td>{d.inv_total}</td>
                         </tr>    
-                     </>
+                     
                     )} 
                 </tbody>
             </table>
@@ -39,6 +39,8 @@ function DisplayItems({ currentItems }) {
 function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
     const [currentInvoices, setCurrentInvoices] = useState([]);
     const [loadingInvoices, setLoadingInvoices] = useState(false);
+    // to update the list of invoices when a new invoice is inserted from AddInvoiceCustomerForm
+    const [updateInvoicesList, setUpdateInvoicesList] = useState(false); // to update the list of invoices
     // intercambia entre la lista de facturas y el formulario para añadir una factura
     const [swapCustomerInvoicesAddInvoice, setSwapCustomerInvoicesAddInvoice] = useState(false);
 
@@ -57,7 +59,7 @@ function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
           } catch (error) {
             console.log(error);
           }
-    }, []);
+    }, [updateInvoicesList]);
 
     return (
         <>    
@@ -66,14 +68,26 @@ function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
                <div className="col-4"><i role="button" className={!swapCustomerInvoicesAddInvoice ? "bi bi-plus-circle" : "bi bi-arrow-left-circle"} onClick={() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}></i>{!swapCustomerInvoicesAddInvoice ? " Add Invoice" : " Invoices List"}</div>
             </div> 
             {swapCustomerInvoicesAddInvoice 
-                ? <AddInvoiceCustomerForm customer={customer} /> 
+                ? <AddInvoiceCustomerForm 
+                    customer={customer} 
+                    updateCustomerInvoices = {() => setUpdateInvoicesList(!updateInvoicesList)}
+                    swapInvoicesListAddInvoice = {() => setSwapCustomerInvoicesAddInvoice(!swapCustomerInvoicesAddInvoice)}
+                  /> 
                 :       
-                loadingInvoices ? <h1>{'Loading Invoices'}</h1> :
-                    <>
-                        <DisplayItems 
-                            currentItems={currentInvoices} 
-                        /> 
-                    </>
+                loadingInvoices ? 
+                    <div className="row">  
+                        <div className="col-6"><h3 className="float-end">Loading invoices</h3></div>
+                        <div className="col-6">
+                        <div class="spinner-border text-warning float-start" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                        </div>
+                    </div> 
+                    :
+                    <DisplayItems 
+                        currentItems={currentInvoices} 
+                    /> 
+                
                 
             } 
         </>

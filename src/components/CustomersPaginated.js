@@ -167,12 +167,21 @@ function CustomersPaginated({ itemsPerPage }) {
           </div>          
         </div> 
         <div className="row">   
-          { loading ? <h1>{'Loading Customers'}</h1> :
-              <>
-                  <DisplayItems 
-                    currentItems={currentCustomers}  
-                  /> 
-              </>
+          { loading ? 
+                      <div className="row">  
+                        <div className="col-6"><h3 className="float-end">Loading customers</h3></div>
+                        <div className="col-6">
+                          <div class="spinner-border text-warning float-start" role="status">
+                            <span class="sr-only"></span>
+                          </div>
+                        </div>
+                      </div> 
+                    :
+            
+                      <DisplayItems 
+                        currentItems={currentCustomers}  
+                      /> 
+              
           }
         </div>
 

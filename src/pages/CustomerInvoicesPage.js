@@ -3,7 +3,7 @@ import "../App.css"
 import CustomerInvoicesPaginated from "../components/CustomerInvoicesPaginated";
 
 
-export function CustomerInvoicesPage () {
+export function CustomerInvoicesPage (updateInvoicesList) {
     const location = useLocation();
     const { customer } = location.state;
 

@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function AddinvoiceCustomerForm({customer}) {
+import CustomerInvoicesPaginated from "./CustomerInvoicesPaginated";
+
+function AddinvoiceCustomerForm(
+    {customer, 
+    updateCustomerInvoices = f => f,
+    swapInvoicesListAddInvoice = f => f}) {
 
     const [services, setServices] = useState([]);
     const [loadingServices, setLoadingServices] = useState(false);
@@ -9,18 +15,87 @@ function AddinvoiceCustomerForm({customer}) {
     const [itemsInvoice, setItemsInvoice] = useState([]);
     const [countItemsInvoice, setCountItemsInvoice] = useState(0);
 
-    const today = new Date().toISOString().substring(0, 10);
+    const [loadingInvoiceInserted, setLoadingInvoiceInserted] = useState(false);
+
+    const today = (new Date()).toISOString().substring(0, 10);
+    //const today = (new Date()).toLocaleDateString();   //toISOString().substring(0, 10);
 
     const [inv_date, setInv_date] = useState(today);
     // const [inv_total, setInv_total] = useState(0);
 
-    const addItemInvoice = (newItem) => {
+    const navigate = useNavigate();
+
+    const addInvoiceItem = (newItem) => {
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, {...newItem, id: countItemsInvoice}]); // agrego id de linea a item
     }
 
-    const submit = e => {
-        alert("Aun no se ingresan facturas...");
+    const removeInvoiceItem = (id) => {
+        setCountItemsInvoice(countItemsInvoice - 1); // 1 linea de factura menos
+        setItemsInvoice(itemsInvoice.filter(item => item.id !== id)); // elimino item de itemsInvoice
+    }
+
+    const submit = async (e) => {
+        e.preventDefault();
+
+        setLoadingInvoiceInserted(true);
+
+        // armo items de la factura para enviar al backend
+        const Items = [
+            {
+                invitem_serv_id : 3,
+                invitem_quantity: 1,
+                invitem_price : 3600
+            },
+            {
+                invitem_serv_id : 5,
+                invitem_quantity: 1,
+                invitem_price : 4000
+            }
+        ];
+        
+        try {
+            const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/Insert`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    SDTInvoice: {
+                        inv_date : inv_date,
+                        inv_cust_id : customer.cust_id,
+                        Items : Items
+                    }
+                })
+            });
+
+            const json = await response.json();
+            //console.log(json);
+            const msgTypeResponse = json.Messages[0].Type;
+            if (msgTypeResponse === 2) {
+                setLoadingInvoiceInserted(false);
+                updateCustomerInvoices(); // update invoices list in CustomerDetailsPage
+                swapInvoicesListAddInvoice(); // swap to invoices list
+                // alert(`Invoice inserted successfully for customer ${customer.cust_fullname}`);
+                // navigate(`/customer-details/${customer.cust_id}`, {state: {customer: customer}, replace: true}); 
+            }
+
+        } catch (error) {
+            alert(error);
+        }
+
+        // "Items" : [
+        //     {
+        //         "invitem_serv_id" : 3,
+        //         "invitem_quantity": 1,
+        //         "invitem_price" : 3600
+        //     },
+        //     {
+        //         "invitem_serv_id" : 5,
+        //         "invitem_quantity": 1,
+        //         "invitem_price" : 4000
+        //     }
+        // ]
     }
 
     useEffect(() => {
@@ -79,7 +154,7 @@ function AddinvoiceCustomerForm({customer}) {
                                         <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
                                     );
                                 })}
-                            </select>    
+                            </select>   
                         </div>
                         <div className="col-sm-3">
                             <small>Precio: $ </small>{selectedService.serv_price} 
@@ -87,11 +162,12 @@ function AddinvoiceCustomerForm({customer}) {
                         <div className="col-sm-2">
                             <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} role="button" onClick={() => {
                                 //const newItem = services.find((service) => service.serv_id === selectedServiceId);
-                                addItemInvoice(selectedService);
+                                addInvoiceItem(selectedService);
                             }}></i>
                         </div>                            
                     </div>                         
-               </fieldset>            
+               </fieldset> 
+               <button type="button" class="btn btn-primary" disabled={itemsInvoice.length === 0} onClick={submit}>Register Invoice</button>             
             </form> 
 
             <div className="row">
@@ -103,15 +179,24 @@ function AddinvoiceCustomerForm({customer}) {
                                     <tr>
                                         <td>{item.serv_descrip}</td>
                                         <td>{item.serv_price}</td>
-                                        <td><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}}></i></td>
+                                        <td><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}} onClick={() => removeInvoiceItem(item.id)}></i></td>
                                     </tr>
                                 );
                             })
                         }
                     </tbody>
                 </table>
-            </div>       
+            </div>  
+            <hr></hr>
 
+            <p>Total:</p>     
+            {loadingInvoiceInserted ?
+                <div class="spinner-border" role="status">
+                            <span class="sr-only"></span>
+                </div>
+                :
+                <p></p>   
+            }          
             {/* <input type="date" name="inv_date" value={inv_date} onChange={e => setInv_date(e.target.value)} />
             <button type="button" onClick={submit} className="btn btn-primary">Submit</button> */}
         </>
