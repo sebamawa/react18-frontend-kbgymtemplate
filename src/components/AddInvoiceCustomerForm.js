@@ -21,18 +21,23 @@ function AddinvoiceCustomerForm(
     //const today = (new Date()).toLocaleDateString();   //toISOString().substring(0, 10);
 
     const [inv_date, setInv_date] = useState(today);
-    // const [inv_total, setInv_total] = useState(0);
+    const [inv_total, setInv_total] = useState(0);
 
     const navigate = useNavigate();
 
     const addInvoiceItem = (newItem) => {
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, {...newItem, id: countItemsInvoice}]); // agrego id de linea a item
+        const total = inv_total + parseInt(newItem.serv_price);
+        setInv_total(total); // update total TODO: * serv_quantity 
     }
 
     const removeInvoiceItem = (id) => {
         setCountItemsInvoice(countItemsInvoice - 1); // 1 linea de factura menos
+        // update total
+        const itemLine = itemsInvoice.find(item => item.id === id); 
         setItemsInvoice(itemsInvoice.filter(item => item.id !== id)); // elimino item de itemsInvoice
+        setInv_total(inv_total - parseInt(itemLine.serv_price));
     }
 
     const submit = async (e) => {
@@ -141,7 +146,7 @@ function AddinvoiceCustomerForm(
                 </div> 
                 <hr/>    
                 <fieldset className="col-form-label">
-                    <legend>Add Items</legend>
+                    <legend><h5>Add Items</h5></legend>
                     <div className="form-group row">
                         
                         <label for="serv_id" className="col-sm-2 col-form-label"><small>Service*:</small></label>
@@ -175,6 +180,7 @@ function AddinvoiceCustomerForm(
                     <tbody>
                         {
                             itemsInvoice.map((item) => {
+      
                                 return (
                                     <tr>
                                         <td>{item.serv_descrip}</td>
@@ -189,7 +195,7 @@ function AddinvoiceCustomerForm(
             </div>  
             <hr></hr>
 
-            <p>Total:</p>     
+            <p>Total: {inv_total}</p>     
             {loadingInvoiceInserted ?
                 <div class="spinner-border" role="status">
                             <span class="sr-only"></span>
