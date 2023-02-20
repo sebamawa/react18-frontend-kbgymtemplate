@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import CustomerInvoicesPaginated from "./CustomerInvoicesPaginated";
-
 function AddinvoiceCustomerForm(
     {customer, 
     updateCustomerInvoices = f => f,
@@ -125,7 +123,7 @@ function AddinvoiceCustomerForm(
     return (
         <>
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="p-3 mb-2 bg-primary text-white bg-gradient rounded">
                 <div class="form-group row">
                     <label for="inv_date" class="col-sm-2 col-form-label"><small>Date*:</small></label>
                     <div class="col-sm-10">
@@ -141,7 +139,7 @@ function AddinvoiceCustomerForm(
 
                     <label for="cust_identification" className="col-sm-3 col-form-label"><small>Identification*:</small></label>
                     <div className="col-sm-3">
-                        <input type="text" readonly className="form-control-plaintext text-light" id="cust_identification" defaultValue={customer.cust_identification}/>
+                        <input type="text" readOnly className="form-control-plaintext text-light" id="cust_identification" defaultValue={customer.cust_identification}/>
                     </div>                    
                 </div> 
                 <hr/>    
@@ -172,7 +170,7 @@ function AddinvoiceCustomerForm(
                         </div>                            
                     </div>                         
                </fieldset> 
-               <button type="button" class="btn btn-primary" disabled={itemsInvoice.length === 0} onClick={submit}>Register Invoice</button>             
+               <button type="button" class="btn btn-success" disabled={itemsInvoice.length === 0 || loadingServices} onClick={submit}>Register Invoice</button>             
             </form> 
 
             <div className="row">
@@ -202,9 +200,24 @@ function AddinvoiceCustomerForm(
                 </div>
                 :
                 <p></p>   
-            }          
-            {/* <input type="date" name="inv_date" value={inv_date} onChange={e => setInv_date(e.target.value)} />
-            <button type="button" onClick={submit} className="btn btn-primary">Submit</button> */}
+            }  
+
+<button type="button" className="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+<div className="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div classname="toast-header">
+      <img src="..." class="rounded me-2" alt="..."/>
+      <strong className="me-auto">Bootstrap</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div className="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div>                 
+            
         </>
     );
 }

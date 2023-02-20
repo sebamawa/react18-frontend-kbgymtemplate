@@ -10,6 +10,9 @@ function DisplayItems({ currentItems }) {
         return monthString;
     } 
 
+    // to check if the invoice customer is from today
+    const today = (new Date()).toISOString().substring(0, 10);
+
     return(
         <>
             <table className="table table-dark table striped">
@@ -23,7 +26,7 @@ function DisplayItems({ currentItems }) {
                 <tbody>
                     {currentItems.map((d) =>
                      
-                        <tr key={d.inv_id}>
+                        <tr key={d.inv_id} className={today === d.inv_date ? "table-success" : ''}> 
                             <td>{d.inv_date}</td>
                             <td>{getMonth(d.inv_date)}</td>
                             <td>{d.inv_total}</td>
