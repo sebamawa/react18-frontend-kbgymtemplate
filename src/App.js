@@ -30,7 +30,7 @@ function App() {
         
       </nav>     
       {/* Contenido de la página */}
-      <div className='App-header'>
+      <div className='App-header background-gradient'>
         <div className='container'>                  
           {/* Route Configuration */}
           <Routes>

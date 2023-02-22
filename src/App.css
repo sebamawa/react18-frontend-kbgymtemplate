@@ -24,6 +24,10 @@
   }
 }
 
+.background-gradient {
+  background: linear-gradient(to right, #c33764, #1d2671);
+}
+
 /* .App-header {
   background-color: #282c34;
   min-height: 100vh;

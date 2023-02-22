@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import './AddInvoiceCustomerForm.css';
 
 function AddinvoiceCustomerForm(
     {customer, 
@@ -121,9 +122,9 @@ function AddinvoiceCustomerForm(
     }, []);   
 
     return (
-        <>
+        <div> 
 
-            <form onSubmit={submit} className="p-3 mb-2 bg-primary text-white bg-gradient rounded">
+            <form onSubmit={submit} className="p-3 mb-2 text-white">
                 <div class="form-group row">
                     <label for="inv_date" class="col-sm-2 col-form-label"><small>Date*:</small></label>
                     <div class="col-sm-10">
@@ -163,7 +164,7 @@ function AddinvoiceCustomerForm(
                             <small>Precio: $ </small>{selectedService.serv_price} 
                         </div>
                         <div className="col-sm-2">
-                            <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} role="button" onClick={() => {
+                            <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} disabled={loadingServices} role="button" onClick={() => {
                                 //const newItem = services.find((service) => service.serv_id === selectedServiceId);
                                 addInvoiceItem(selectedService);
                             }}></i>
@@ -180,7 +181,7 @@ function AddinvoiceCustomerForm(
                             itemsInvoice.map((item) => {
       
                                 return (
-                                    <tr>
+                                    <tr className="bg-warning">
                                         <td>{item.serv_descrip}</td>
                                         <td>{item.serv_price}</td>
                                         <td><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}} onClick={() => removeInvoiceItem(item.id)}></i></td>
@@ -201,24 +202,8 @@ function AddinvoiceCustomerForm(
                 :
                 <p></p>   
             }  
-
-<button type="button" className="btn btn-primary" id="liveToastBtn">Show live toast</button>
-
-<div className="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div classname="toast-header">
-      <img src="..." class="rounded me-2" alt="..."/>
-      <strong className="me-auto">Bootstrap</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div className="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-  </div>
-</div>                 
             
-        </>
+        </div>
     );
 }
 
