@@ -20,7 +20,7 @@ function App() {
     <div className='App'>
 
       {/* Menu de navegación */}
-      <nav className="navbar navbar-expand-lg navbar-light p-2">
+      <nav className="navbar navbar-expand-lg navbar-light p-2 background-navbar-gradient">
         
           <Link to="/" className="navbar-brand h3 text-white">Home</Link> 
         
