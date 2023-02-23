@@ -188,7 +188,7 @@ function AddinvoiceCustomerForm(
                <div className="row">
                     <div className="col-6">
                         <div className="form-group">
-                            <textarea class="form-control" id="invitem_descrip" rows="3" defaultValue={selectedService.serv_descrip}></textarea>
+                            <textarea class="form-control" id="invitem_descrip" rows="2" defaultValue={selectedService.serv_descrip}></textarea>
                         </div>
                     </div>
                 </div>             
