@@ -169,7 +169,7 @@ function AddinvoiceCustomerForm(
 
                         <div className="form-group">
                             <label for="invitem_price">Price</label>
-                            <input type="number" className="form-control" id="invitem_price" defaultValue={parseInt(selectedService.serv_price)}/>
+                            <input type="number" className="form-control" id="invitem_price" defaultValue={selectedService.serv_price}/>
                             {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
                         </div>
                     </div>   
