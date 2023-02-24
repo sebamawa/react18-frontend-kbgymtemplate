@@ -16,6 +16,10 @@ function AddinvoiceCustomerForm(
 
     const [loadingInvoiceInserted, setLoadingInvoiceInserted] = useState(false);
 
+    const[invitem_descrip, setInvitem_descrip] = useState('');
+    const[invitem_descrip_disabled, setInvitem_descrip_disabled] = useState(true);
+    const [invitem_price, setInvitem_price] = useState(0);
+
     const today = (new Date()).toISOString().substring(0, 10);
     //const today = (new Date()).toLocaleDateString();   //toISOString().substring(0, 10);
 
@@ -24,10 +28,15 @@ function AddinvoiceCustomerForm(
 
     const navigate = useNavigate();
 
-    const addInvoiceItem = (newItem) => {
+    const addInvoiceItem = () => {
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
-        setItemsInvoice([...itemsInvoice, {...newItem, id: countItemsInvoice}]); // agrego id de linea a item
-        const total = inv_total + parseInt(newItem.serv_price);
+        setItemsInvoice([...itemsInvoice, 
+            {
+                id: countItemsInvoice, // agrego id de linea a item
+                invitem_descrip: invitem_descrip,
+                invitem_price: invitem_price
+            }]); 
+        const total = inv_total + parseInt(invitem_price);
         setInv_total(total); // update total TODO: * serv_quantity 
     }
 
@@ -36,7 +45,7 @@ function AddinvoiceCustomerForm(
         // update total
         const itemLine = itemsInvoice.find(item => item.id === id); 
         setItemsInvoice(itemsInvoice.filter(item => item.id !== id)); // elimino item de itemsInvoice
-        setInv_total(inv_total - parseInt(itemLine.serv_price));
+        setInv_total(inv_total - parseInt(itemLine.invitem_price));
     }
 
     const submit = async (e) => {
@@ -111,7 +120,10 @@ function AddinvoiceCustomerForm(
            
             const json = await response.json();
             setServices(json.SDTServices);
-            setSelectedService(json.SDTServices[0]);
+            const firstServ = json.SDTServices[0];
+            setSelectedService(firstServ);
+            setInvitem_descrip(firstServ.serv_descrip);
+            setInvitem_price(firstServ.serv_price);
             setLoadingServices(false);
           } catch (error) {
             console.log(error);
@@ -148,50 +160,80 @@ function AddinvoiceCustomerForm(
                     <legend><h5>Add Items</h5></legend> */}
                     <div className="row">
                         
-                    <div className="col-6">
-                        <div className="form-group">
-                            <label for="serv_id">Service</label>
-                            <select className="form-select form-control" id="serv_id" onChange={e => {setSelectedService(services.find((serv) => serv.serv_id === parseInt(e.target.value)) )}}>
-                                {loadingServices ? <option value="" readonly>Loading...</option> :
-                                
-                                services.map((service) => {
-                                    return (
-                                        <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
-                                    );
-                                })}
-                            </select>   
+                        <div className="col-6">
+                            <div className="form-group">
+                                <label for="serv_id">Service</label>
+                                <select className="form-select form-control" id="serv_id" 
+                                        onChange={ e => {
+                                            const actualServ = services.find((serv) => serv.serv_id === parseInt(e.target.value));
+                                            setSelectedService(actualServ);
+                                            setInvitem_descrip(actualServ.serv_descrip);
+                                            setInvitem_price(actualServ.serv_price);
+                                }}>
+                                    {loadingServices ? <option value="" readonly>Loading...</option> :
+                                    
+                                    services.map((service) => {
+                                        return (
+                                            <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
+                                        );
+                                    })}
+                                </select>   
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="col-5">
-                        {/* <label for="invitem_price" className="col-sm-3 col-form-label"><small>Price:</small></label>
-                        <input type="text" className="form-control-plaintext text-light" id="invitem_price" defaultValue={selectedService.serv_price}/> */}
-
-                        <div className="form-group">
-                            <label for="invitem_price">Price</label>
-                            <input type="number" className="form-control" id="invitem_price" defaultValue={selectedService.serv_price}/>
-                            {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
-                        </div>
-                    </div>   
-
-                        {/* <div className="col-sm-3">
-                            <small>Precio: $ </small>{selectedService.serv_price} 
-                        </div> */}
-                        <div className="col-1">
+                        <div className="col-6">
+                        <div className="col-1 ms-auto">
                             <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} disabled={loadingServices} role="button" onClick={() => {
                                 //const newItem = services.find((service) => service.serv_id === selectedServiceId);
-                                addInvoiceItem(selectedService);
+                                addInvoiceItem();
                             }}></i>
-                        </div>                            
-                    </div>                         
-               {/* </fieldset>  */}
-               <div className="row">
-                    <div className="col-6">
-                        <div className="form-group">
-                            <textarea class="form-control" id="invitem_descrip" rows="2" defaultValue={selectedService.serv_descrip}></textarea>
+                        </div>  
+                    </div>    
+                    <div className="row">
+                            <div className="col-5">
+                                <div className="form-group">
+                                        <textarea 
+                                            class="form-control" id="invitem_descrip" 
+                                            rows="2" 
+                                            disabled = {invitem_descrip_disabled}
+                                            value={invitem_descrip}
+                                            onChange={e => setInvitem_descrip(e.target.value)}>
+                                        </textarea>
+                                </div>
+                            </div>
+                            <div className="col-2">
+                                <i 
+                                    class="bi bi-pencil" 
+                                    role='button' 
+                                    style={{fontSize: 1.0+'rem'}}
+                                    onClick={() => setInvitem_descrip_disabled(!invitem_descrip_disabled)}>  
+                                </i>
+                                <i 
+                                    class="bi bi-trash"
+                                    role='button'
+                                    style={{fontSize: 1.0+'rem'}}
+                                    onClick={() => {
+                                        // alert('limpiar text area');
+                                        setInvitem_descrip('')}
+                                    }>    
+                                </i>
+                            </div>
+                            <div className="col-5">
+                                <div className="form-group">
+                                    <label for="invitem_price">Price</label>
+                                    <input 
+                                        type="number" 
+                                        className="form-control" 
+                                        id="invitem_price" value={invitem_price} 
+                                        onChange={e => setInvitem_price(e.target.value)}
+                                    />
+                                    {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
+                                </div>
+                            </div>           
                         </div>
-                    </div>
-                </div>             
+                    </div>          
+                                        
+               {/* </fieldset>  */}
+           
 
                <button type="button" class="btn btn-success" disabled={itemsInvoice.length === 0 || loadingServices} onClick={submit}>Register Invoice</button>             
             </form> 
@@ -204,8 +246,8 @@ function AddinvoiceCustomerForm(
       
                                 return (
                                     <tr>
-                                        <td>{item.serv_descrip}</td>
-                                        <td>{item.serv_price}</td>
+                                        <td>{item.invitem_descrip}</td>
+                                        <td>{item.invitem_price}</td>
                                         <td><i class="bi bi-x-circle" role='button' style={{fontSize: 1.5+'rem'}} onClick={() => removeInvoiceItem(item.id)}></i></td>
                                     </tr>
                                 );
