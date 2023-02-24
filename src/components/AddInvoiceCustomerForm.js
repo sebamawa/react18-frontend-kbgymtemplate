@@ -29,6 +29,14 @@ function AddinvoiceCustomerForm(
     const navigate = useNavigate();
 
     const addInvoiceItem = () => {
+        if (invitem_descrip === "") {
+            alert(`You must enter a descripction for the service or product.`);
+            return
+        }
+        if (invitem_price == 0) {
+            alert(`You must enter a value greater than zero for the service/product.`);
+            return
+        }
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, 
             {
@@ -189,33 +197,37 @@ function AddinvoiceCustomerForm(
                         </div>  
                     </div>    
                     <div className="row">
-                            <div className="col-5">
+                            <div className="col-6">
                                 <div className="form-group">
                                         <textarea 
                                             class="form-control" id="invitem_descrip" 
-                                            rows="2" 
+                                            rows="3" 
                                             disabled = {invitem_descrip_disabled}
                                             value={invitem_descrip}
+                                            placeholder={"Descripction of service or product (required)"}
                                             onChange={e => setInvitem_descrip(e.target.value)}>
                                         </textarea>
                                 </div>
                             </div>
-                            <div className="col-2">
-                                <i 
-                                    class="bi bi-pencil" 
-                                    role='button' 
-                                    style={{fontSize: 1.0+'rem'}}
-                                    onClick={() => setInvitem_descrip_disabled(!invitem_descrip_disabled)}>  
-                                </i>
-                                <i 
-                                    class="bi bi-trash"
-                                    role='button'
-                                    style={{fontSize: 1.0+'rem'}}
-                                    onClick={() => {
-                                        // alert('limpiar text area');
-                                        setInvitem_descrip('')}
-                                    }>    
-                                </i>
+                            <div className="col-1 d-flex">
+                                <p className="float-start">
+                                    <i 
+                                        class="bi bi-pencil" 
+                                        role='button' 
+                                        style={{fontSize: 1.0+'rem'}}
+                                        onClick={() => setInvitem_descrip_disabled(!invitem_descrip_disabled)}>  
+                                    </i>
+                                    <br></br>
+                                    <i 
+                                        class="bi bi-trash"
+                                        role='button'
+                                        style={{fontSize: 1.0+'rem'}}
+                                        onClick={() => {
+                                            setInvitem_descrip('')
+                                            // setInvitem_price(0);
+                                        }}>    
+                                    </i>
+                                </p>
                             </div>
                             <div className="col-5">
                                 <div className="form-group">
@@ -223,7 +235,9 @@ function AddinvoiceCustomerForm(
                                     <input 
                                         type="number" 
                                         className="form-control" 
-                                        id="invitem_price" value={invitem_price} 
+                                        id="invitem_price" 
+                                        value={invitem_price} 
+                                        placeholder={"Line price (required)"}
                                         onChange={e => setInvitem_price(e.target.value)}
                                     />
                                     {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
