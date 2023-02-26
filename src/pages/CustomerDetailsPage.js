@@ -53,13 +53,14 @@ function CustomerDetailsPage() {
         <>
             <div className="row">
                 <div className="col-3 mt-3">
-                    {/* Customer Card */}
-                    <div className="card">
+                    <h3>Customer</h3>
+                    <div className={"card " + (customer.cust_has_debt ? "bg-warning border border-5 border-danger" : "")}>
                         <img src={customer.cust_image}  alt={customer.cust_fullname}/>
                         <div className={"card-body"}>
-                            <h5 className={"card-title text-black"}>{customer.cust_fullname}</h5> 
+                            <h5 className="card-title text-black">{customer.cust_fullname}</h5> 
                             <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                             <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
+                            <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4> 
                             <div class="form-check">
                                 
                                 <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 

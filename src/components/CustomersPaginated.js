@@ -4,11 +4,12 @@ import './CustomersPaginated.css';
 
 import { Link } from "react-router-dom";
 
-function DisplayItems({ currentItems }) {
+function DisplayItems({ currentItems, thereAreCustomersWithDebt }) {
+
   return (
     <>
         {/* <h3>Customers List</h3>  */}
-        <table className='table table-dark table-striped'>
+        <table className={'table table-dark table-striped table-hover ' +  (thereAreCustomersWithDebt ? "border border-4 border-danger" : "")}>
             <thead>
                 <tr>
                     <th scope='col'>Fullname</th>
@@ -19,9 +20,10 @@ function DisplayItems({ currentItems }) {
             </thead>
             <tbody>
                 {currentItems && currentItems.map((d)=> 
+
                     <tr key={d.cust_id}>
                         <td>{d.cust_fullname}</td>
-                        <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/></td>
+                        <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/><i className={d.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></td>
                         <td>{d.cust_phone}</td>
                         <td>
                           <Link 
@@ -33,7 +35,6 @@ function DisplayItems({ currentItems }) {
                         
                         </td>
                     </tr>
-                  
                 )}
             </tbody>
         </table>
@@ -41,7 +42,7 @@ function DisplayItems({ currentItems }) {
   );
 }
 
-function CustomersPaginated({ itemsPerPage }) {
+function CustomersPaginated({ itemsPerPage, thereAreCustomersWithDebt }) {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,8 @@ function CustomersPaginated({ itemsPerPage }) {
 
   const [currentCustomers, setCurrentCustomers] = useState([]); // from API
   const [totalPages, setTotalPages] = useState(0); // from API
+
+  console.log(thereAreCustomersWithDebt);
 
   useEffect(() => {
     // fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=${activeCustomersBool}&page_number=${currentPage}&page_size=${itemsPerPage}`)
@@ -78,9 +81,9 @@ function CustomersPaginated({ itemsPerPage }) {
 
         let response = null;
         if (customerNameFilter !== "") { // filter to search by name not empty
-          response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/GetByName?cust_fullname=${customerNameFilter}&cust_active=${activeCustomersBool}&page_number=${currentPage}&page_size=${itemsPerPage}`);
+          response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/GetByName?cust_fullname=${customerNameFilter}&cust_active=${activeCustomersBool}&cust_has_debt=${thereAreCustomersWithDebt}&page_number=${currentPage}&page_size=${itemsPerPage}`);
         } else {
-          response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=${activeCustomersBool}&page_number=${currentPage}&page_size=${itemsPerPage}`);
+          response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=${activeCustomersBool}&cust_has_debt=${thereAreCustomersWithDebt}&page_number=${currentPage}&page_size=${itemsPerPage}`);
         }
         const json = await response.json();
         // console.log(json.SDTCustomers);
@@ -125,7 +128,11 @@ function CustomersPaginated({ itemsPerPage }) {
     //       setErrorMsg(`Un error ha ocurrido, recargue la página.\nDescripción:\n${error.message}`);
     //       // console.log(error);
     // }
-  }, [currentPage, activeCustomersBool, customerNameFilter, errorMsg]);
+  }, [currentPage, activeCustomersBool, customerNameFilter, thereAreCustomersWithDebt, errorMsg]);
+
+  // useEffect(() => {
+  //   setCustHasDebt(thereAreCustomersWithDebt);
+  // }, [thereAreCustomersWithDebt]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -135,24 +142,27 @@ function CustomersPaginated({ itemsPerPage }) {
   return (
     <>
         <div className="row">
-          <div className="col-4">
+          <div className="col-3">
             {errorMsg !=="" ? 
               <div className="alert alert-danger mt-3" role="alert">
-                {errorMsg}
+                {errorMsg}customerNameFilter
               </div> 
               : <p>Messages</p>
             } 
           </div>
-          <div className="col-6">
+          <div className="col-3">
+
+          </div>
+          <div className="col-4">
             <input 
               type="text" 
               className="form-control mt-3"
-              placeholder="Buscar por nombre"
+              placeholder="Search by name"
               value={customerNameFilter}
               onChange={event => {
                 // mejorar el filtro para que no se ejecute cada vez que se escribe una letra
                   setCustomerNameFilter(event.target.value);
-                  setCurrentPage(1);
+                  setCurrentPage(1); // to avoid pagination errors
               }}
             />
           </div>
@@ -163,6 +173,7 @@ function CustomersPaginated({ itemsPerPage }) {
                 }}>
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
+                {/* <option value="false">With debts</option> */}
             </select>
           </div>          
         </div> 
@@ -171,7 +182,7 @@ function CustomersPaginated({ itemsPerPage }) {
                       <div className="row">  
                         <div className="col-6"><h3 className="float-end">Loading customers</h3></div>
                         <div className="col-6">
-                          <div class="spinner-border text-warning float-start" role="status">
+                          <div className="spinner-border text-warning float-start" role="status">
                             <span class="sr-only"></span>
                           </div>
                         </div>
@@ -179,7 +190,8 @@ function CustomersPaginated({ itemsPerPage }) {
                     :
             
                       <DisplayItems 
-                        currentItems={currentCustomers}  
+                        currentItems={currentCustomers}
+                        thereAreCustomersWithDebt={thereAreCustomersWithDebt}
                       /> 
               
           }

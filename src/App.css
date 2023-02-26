@@ -25,11 +25,15 @@
 }
 
 .background-gradient {
-  background: linear-gradient(to right, #c33764, #1d2671);
+  background: linear-gradient(to right, #d1e6e6, #1d2671);
+}
+
+.background-customers-with-debts-gradient {
+  background: linear-gradient(to right, #f6acc6, #f6055e);
 }
 
 .background-navbar-gradient {
-  background: linear-gradient(to right, #3c80f5, #1d2671);
+  background: linear-gradient(to right, #1d2671, #3c80f5);
 }
 
 /* .App-header {

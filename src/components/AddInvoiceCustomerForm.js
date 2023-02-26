@@ -142,7 +142,7 @@ function AddinvoiceCustomerForm(
     }, []);   
 
     return (
-        <div className="bg-primary bg-gradient rounded"> 
+        <div className="form-background rounded"> 
 
             <form onSubmit={submit} className="p-3 mb-2 text-white">
                 <div class="row">
