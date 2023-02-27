@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import './AddInvoiceCustomerForm.css';
 
 function AddinvoiceCustomerForm(
@@ -26,24 +25,27 @@ function AddinvoiceCustomerForm(
     const [inv_date, setInv_date] = useState(today);
     const [inv_total, setInv_total] = useState(0);
 
-    const navigate = useNavigate();
-
     const addInvoiceItem = () => {
         if (invitem_descrip === "") {
             alert(`You must enter a descripction for the service or product.`);
             return
         }
-        if (invitem_price == 0) {
+        if (invitem_price === 0) {
             alert(`You must enter a value greater than zero for the service/product.`);
             return
         }
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, 
             {
-                id: countItemsInvoice, // agrego id de linea a item
+                id: countItemsInvoice, // agrego id de linea a item (para agregado/borrado en el front)
+
+                // mejorar esta condicion para enviar el serv_id al backend en caso de que corresponda
+                invitem_serv_id: selectedService.serv_descrip === invitem_descrip ? selectedService.serv_id : 0,
                 invitem_descrip: invitem_descrip,
-                invitem_price: invitem_price
+                invitem_price: parseInt(invitem_price),
+                invitem_quantity: 1
             }]); 
+
         const total = inv_total + parseInt(invitem_price);
         setInv_total(total); // update total TODO: * serv_quantity 
     }
@@ -62,18 +64,23 @@ function AddinvoiceCustomerForm(
         setLoadingInvoiceInserted(true);
 
         // armo items de la factura para enviar al backend
-        const Items = [
-            {
-                invitem_serv_id : 3,
-                invitem_quantity: 1,
-                invitem_price : 3600
-            },
-            {
-                invitem_serv_id : 5,
-                invitem_quantity: 1,
-                invitem_price : 4000
-            }
-        ];
+        // const Items = [
+        //     {
+        //         invitem_serv_id: selectedService.serv_descrip === invitem_descrip ? selectedService.serv_id : 0,
+        //         invitem_descrip: "Servicio 1",
+        //         invitem_quantity: 1,
+        //         invitem_price: 3600
+        //     },
+        //     {
+        //         invitem_serv_id: 5,
+        //         invitem_descrip: "Servicio 2",
+        //         invitem_quantity: 1,
+        //         invitem_price : 4000
+        //     }
+        // ];
+
+        // remuevo id de los objetos del array de items
+        const itemsToSend = itemsInvoice.map(({id, ...keepAttrs}) => keepAttrs);
         
         try {
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/Insert`, {
@@ -85,7 +92,7 @@ function AddinvoiceCustomerForm(
                     SDTInvoice: {
                         inv_date : inv_date,
                         inv_cust_id : customer.cust_id,
-                        Items : Items
+                        Items : itemsToSend // Items
                     }
                 })
             });
@@ -97,26 +104,13 @@ function AddinvoiceCustomerForm(
                 setLoadingInvoiceInserted(false);
                 updateCustomerInvoices(); // update invoices list in CustomerDetailsPage
                 swapInvoicesListAddInvoice(); // swap to invoices list
-                // alert(`Invoice inserted successfully for customer ${customer.cust_fullname}`);
+                alert(`Invoice inserted successfully for customer ${customer.cust_fullname}`);
                 // navigate(`/customer-details/${customer.cust_id}`, {state: {customer: customer}, replace: true}); 
             }
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
-
-        // "Items" : [
-        //     {
-        //         "invitem_serv_id" : 3,
-        //         "invitem_quantity": 1,
-        //         "invitem_price" : 3600
-        //     },
-        //     {
-        //         "invitem_serv_id" : 5,
-        //         "invitem_quantity": 1,
-        //         "invitem_price" : 4000
-        //     }
-        // ]
     }
 
     useEffect(() => {
@@ -185,6 +179,7 @@ function AddinvoiceCustomerForm(
                                             <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
                                         );
                                     })}
+                                    {/* <option value='0' key='0' >None</option>  */}
                                 </select>   
                             </div>
                         </div>
