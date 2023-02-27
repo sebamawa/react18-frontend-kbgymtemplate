@@ -68,7 +68,8 @@ function App() {
 
           <Link to="/customers" className="navbar-brand h3 text-white mx-auto" >      
             <button type="button" 
-                className={(customersWithDebt>0 ? "visible " : "invisible ") +"btn mt-3 " + (thereAreCustomersWithDebt ?  "btn-danger shadow-lg" : "btn-primary ")}
+                className={"btn " + (customersWithDebt>0 ? "visible " : "invisible ") +"btn mt-3 " + (thereAreCustomersWithDebt ?  "btn-danger" : "btn-primary")}
+                // aria-pressed={thereAreCustomersWithDebt ? "true" : "false"}
                 onClick={() => setThereAreCustomersWithDebt(!thereAreCustomersWithDebt)}   
             >
                 Customers with debt: {

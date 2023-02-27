@@ -2,33 +2,41 @@ import ReactPaginate from "react-paginate";
 import { useState, useEffect } from "react";
 import './CustomersPaginated.css';
 
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function DisplayItems({ currentItems, thereAreCustomersWithDebt }) {
 
+  const navigate = useNavigate();
+
   return (
     <>
         {/* <h3>Customers List</h3>  */}
-        <table className={'table table-dark table-striped table-hover ' +  (thereAreCustomersWithDebt ? "border border-4 border-danger" : "")}>
+        <table className={'table table-dark table-striped table-hover'}>
             <thead>
                 <tr>
                     <th scope='col'>Fullname</th>
                     <th scope='col'>Image</th>
                     <th scope='col'>Phone</th>
+                    <th scope='col'>Payday limit</th>
                     <th scope='col'>Details</th>
                 </tr>
             </thead>
             <tbody>
                 {currentItems && currentItems.map((d)=> 
 
-                    <tr key={d.cust_id}>
+                    <tr key={d.cust_id} className={d.cust_has_debt ? "border border-4 border-danger" : ""}
+                        role="button" onClick={() => navigate(`/customer-details/${d.cust_id}`, {state: {customer: d}})}
+                    >
+                       
                         <td>{d.cust_fullname}</td>
                         <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/><i className={d.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></td>
                         <td>{d.cust_phone}</td>
+                        <td>{d.cust_pay_out_of_period ? d.cust_payday_limit : "before 10"}</td>
                         <td>
                           <Link 
-                              to={`/customer-details/${d.cust_id}`} 
-                              state={{customer: d}}
+                              // to={`/customer-details/${d.cust_id}`} 
+                              // state={{customer: d}}
                           > 
                                 <i className="bi bi-list-task"></i>
                           </Link>
@@ -58,23 +66,8 @@ function CustomersPaginated({ itemsPerPage, thereAreCustomersWithDebt }) {
   const [currentCustomers, setCurrentCustomers] = useState([]); // from API
   const [totalPages, setTotalPages] = useState(0); // from API
 
-  console.log(thereAreCustomersWithDebt);
-
   useEffect(() => {
-    // fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=${activeCustomersBool}&page_number=${currentPage}&page_size=${itemsPerPage}`)
-    //   .then(response => response.json())
-    //   .then(json => {
-    //       setCurrentCustomers(json.SDTCustomers); 
-    //       setTotalPages(json.TotalPages);
-    //       setLoading(false);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     setErrorMsg(`Un error ha ocurrido, recargue la página.\nDescripción:\n${error.message}`);
-    //   });
 
-    // try {
-      //const fetchCustomers = async () => {
      (async() => {   
       try {
         setLoading(true);
@@ -129,10 +122,6 @@ function CustomersPaginated({ itemsPerPage, thereAreCustomersWithDebt }) {
     //       // console.log(error);
     // }
   }, [currentPage, activeCustomersBool, customerNameFilter, thereAreCustomersWithDebt, errorMsg]);
-
-  // useEffect(() => {
-  //   setCustHasDebt(thereAreCustomersWithDebt);
-  // }, [thereAreCustomersWithDebt]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {

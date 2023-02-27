@@ -60,7 +60,8 @@ function CustomerDetailsPage() {
                             <h5 className="card-title text-black">{customer.cust_fullname}</h5> 
                             <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                             <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
-                            <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4> 
+                            {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt ? "bg-danger" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
+                            <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4>
                             <div class="form-check">
                                 
                                 <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 
