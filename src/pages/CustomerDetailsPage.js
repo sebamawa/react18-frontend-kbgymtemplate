@@ -1,5 +1,6 @@
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { CustomerInvoicesPage } from "./CustomerInvoicesPage";
+import  { CustomerDebtsPage } from "./CustomerDebtsPage";
 import { useState, useEffect } from "react";
 
 function CustomerDetailsPage() {
@@ -93,16 +94,19 @@ function CustomerDetailsPage() {
                         </div>
                     </div>
                 </div>
-                <div className="col-7">
+                <div className="col-6">
                     {/* Customer Invoices */}
                     <CustomerInvoicesPage
                         // cust_id={parms.cust_id}
                         customer = {customer}
                     />
                 </div>
-                <div className="col-2">
+                <div className="col-3">
                     {/* Customer Debts */}
                     Debts List
+                    < CustomerDebtsPage
+                        customer = {customer}
+                    />
                 </div>                
             </div>
         </>

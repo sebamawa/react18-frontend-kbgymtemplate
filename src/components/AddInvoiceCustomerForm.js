@@ -184,7 +184,7 @@ function AddinvoiceCustomerForm(
                             </div>
                         </div>
                         <div className="col-6">
-                        <div className="col-1 ms-auto">
+                        <div className="col-1 mx-auto">
                             <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} disabled={loadingServices} role="button" onClick={() => {
                                 //const newItem = services.find((service) => service.serv_id === selectedServiceId);
                                 addInvoiceItem();
