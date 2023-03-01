@@ -15,7 +15,7 @@ function DisplayItems({ currentItems }) {
 
     return(
         <>
-            <table className="table table-dark table striped table-hover">
+            <table className="table table-dark table-striped table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Date</th>

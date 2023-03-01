@@ -64,7 +64,8 @@ function CustomerDetailsPage() {
                             {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt ? "bg-danger" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
                             <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4>
                             <div class="form-check">
-                                
+                                {!loadingChangeStatus
+                                ?
                                 <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 
                                     onClick={() => {
                                         const msg = cust_active ? `inactive` : `active`;
@@ -78,18 +79,19 @@ function CustomerDetailsPage() {
                                         // alert(`Status changed`);
                                     }}
                                 />
-                                {!loadingChangeStatus ? 
-                                
-                                    <label className="form-check-label text-black" for="cust_active">
-                                        <h6>Is active?</h6>
-                                    </label>
                                 :
-                                <label className="form-check-label text-warning" for="cust_active">
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only"></span>
+                                <div className="form-check-input">
+                                <label className="form-check-label text-success" for="cust_active">
+                                    <div className="spinner-border" role="status">
+                                        <span className="sr-only"></span>
+                                    </div>
+                                </label>
                                 </div>
-                            </label>
                                 }
+                                
+                                <label className="form-check-label text-black" for="cust_active">
+                                    <h6>Is active?</h6>
+                                </label>
                             </div>            
                         </div>
                     </div>
