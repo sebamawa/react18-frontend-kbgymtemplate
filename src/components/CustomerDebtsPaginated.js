@@ -8,6 +8,13 @@ function CustomerDebtsPaginated({customer}) {
     const [firstRender, setFirstRender] = useState(false);
     const [loadingDebtUpdated, setLoadingDebtUpdated] = useState(false);
 
+    // to render the month name
+    const months = ["Enero", "Febrero", "Merzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const getMonth = (dateString) => { // dateString: "YYYY-MM-DD"
+        const monthString = months[parseInt(dateString.substring(5, 7)) - 1];
+        return monthString;
+    }     
+
     useEffect(() => {
 
         (async() => {   
@@ -63,66 +70,69 @@ function CustomerDebtsPaginated({customer}) {
 
     return (
         <>
+        <h3>Debts List</h3>
         { loadingDebts ? <h3>Loading debts</h3> :   
              
-            <>
-             <table className="table table-warning table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Descrip</th>
-                        <th>Active/Cancelled 
-                            <i className="bi bi-square" style={{fontSize:1+'rem'}}></i> &nbsp;
-                            <i className="bi bi-check2-square" style={{fontSize:1+'rem'}}></i>
-                        </th>
-                    </tr>
-                </thead> 
-                <tbody>
-                    { currentDebts && currentDebts.map((item) => 
-                            <tr key={item.debt_id}>
-                                <td>{item.debt_date}</td>
-                                <td>{item.debt_descrip}</td>
-                                {loadingDebtUpdated && item.debt_id === debtToChangeStatus.debt_id
-                                    ? 
-                                    <td>
-                                        <label className="form-check-label text-warning" for="cust_active">
-                                            <div className="spinner-border" role="status">
-                                                <span className="sr-only"></span>
-                                            </div>
-                                        </label>
-                                    </td> 
-                                    :
-                                    <td>
-                                        <input className="form-check-input" type="checkbox" value={item.debt_cancelled} id="debt_cancelled" checked={item.debt_cancelled} 
-                                            onClick = {() => {
-                                                const confirmation = window.confirm(`Are you sure you want to change the status of the debt to: ${item.debt_cancelled ? "Active" : "Cancelled"}?`);
-                                                if (confirmation) {
-                                                
-                                                    // update debt status
-                                                    const auxCurrentDebts = currentDebts.map(d => {
-                                                        if (d.debt_id === item.debt_id) {
-                                                            //const dCopy = {...d, debt_cancelled: !item.debt_cancelled}
-                                                            d.debt_cancelled = !item.debt_cancelled; // modifica d?
-                                                            setDebtToChangeStatus(d);
+            <div className='mt-3'>
+                <table className="table table-striped table-light table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Month</th>
+                            <th scope="col">Descrip</th>
+                            <th>Active/Cancelled 
+                                <i className="bi bi-square" style={{fontSize:1+'rem'}}></i> &nbsp;
+                                <i className="bi bi-check2-square" style={{fontSize:1+'rem'}}></i>
+                            </th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        { currentDebts && currentDebts.map((item) => 
+                                <tr className={item.debt_cancelled ? "table-success" : "table-danger"} key={item.debt_id}>
+                                    <td>{item.debt_date}</td>
+                                    <td>{getMonth(item.debt_date)}</td>
+                                    <td>{item.debt_descrip}</td>
+                                    {loadingDebtUpdated && item.debt_id === debtToChangeStatus.debt_id
+                                        ? 
+                                        <td>
+                                            <label className="form-check-label text-warning" for="cust_active">
+                                                <div className="spinner-border" role="status">
+                                                    <span className="sr-only"></span>
+                                                </div>
+                                            </label>
+                                        </td> 
+                                        :
+                                        <td>
+                                            <input className="form-check-input" type="checkbox" value={item.debt_cancelled} id="debt_cancelled" checked={item.debt_cancelled} 
+                                                onClick = {() => {
+                                                    const confirmation = window.confirm(`Are you sure you want to change the status of the debt to: ${item.debt_cancelled ? "Active" : "Cancelled"}?`);
+                                                    if (confirmation) {
+                                                    
+                                                        // update debt status
+                                                        const auxCurrentDebts = currentDebts.map(d => {
+                                                            if (d.debt_id === item.debt_id) {
+                                                                //const dCopy = {...d, debt_cancelled: !item.debt_cancelled}
+                                                                d.debt_cancelled = !item.debt_cancelled; // modifica d?
+                                                                setDebtToChangeStatus(d);
+                                                                return d;
+                                                                //return dCopy;
+                                                            }
                                                             return d;
-                                                            //return dCopy;
-                                                        }
-                                                        return d;
-                                                    }); 
-                                                    setCurrentDebts(auxCurrentDebts);
-                                                }
-                                            }}
-                                            onChange = {() => {
+                                                        }); 
+                                                        setCurrentDebts(auxCurrentDebts);
+                                                    }
+                                                }}
+                                                onChange = {() => {
 
-                                            }}
-                                        />
-                                    </td>
-                                }
-                            </tr>
-                    )}    
-                </tbody>
-            </table>
-            </>
+                                                }}
+                                            />
+                                        </td>
+                                    }
+                                </tr>
+                        )}    
+                    </tbody>
+                </table>
+            </div>
             }
     </>
     );

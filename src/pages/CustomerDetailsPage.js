@@ -53,7 +53,7 @@ function CustomerDetailsPage() {
     return (
         <>
             <div className="row">
-                <div className="col-3 mt-3">
+                <div className="col-2">
                     <h3>Customer</h3>
                     <div className={"card " + (customer.cust_has_debt ? "bg-warning border border-5 border-danger" : "")}>
                         <img src={customer.cust_image}  alt={customer.cust_fullname}/>
@@ -103,9 +103,8 @@ function CustomerDetailsPage() {
                         customer = {customer}
                     />
                 </div>
-                <div className="col-3">
+                <div className="col-4">
                     {/* Customer Debts */}
-                    Debts List
                     < CustomerDebtsPage
                         customer = {customer}
                     />

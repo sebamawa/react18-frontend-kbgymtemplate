@@ -30,7 +30,7 @@ function DisplayItems({ currentItems, thereAreCustomersWithDebt }) {
                     >
                        
                         <td>{d.cust_fullname}</td>
-                        <td><img src={d.cust_image} alt={"img"} width="60px" height="60px"/><i className={d.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></td>
+                        <td><img src={d.cust_image} alt={d.cust_fullname} width="60px" height="60px"/><i className={d.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></td>
                         <td>{d.cust_phone}</td>
                         <td>{d.cust_pay_out_of_period ? d.cust_payday_limit : "before 10"}</td>
                         <td>
