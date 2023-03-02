@@ -106,6 +106,8 @@ function AddinvoiceCustomerForm(
                 swapInvoicesListAddInvoice(); // swap to invoices list
                 alert(`Invoice inserted successfully for customer ${customer.cust_fullname}`);
                 // navigate(`/customer-details/${customer.cust_id}`, {state: {customer: customer}, replace: true}); 
+            } else {
+                alert(`Error inserting invoice for customer ${customer.cust_fullname}`);    
             }
 
         } catch (error) {
