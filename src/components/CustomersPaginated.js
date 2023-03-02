@@ -25,7 +25,7 @@ function DisplayItems({ currentItems, thereAreCustomersWithDebt }) {
             <tbody>
                 {currentItems && currentItems.map((d)=> 
 
-                    <tr key={d.cust_id} className={d.cust_has_debt ? "border border-4 border-danger" : ""}
+                    <tr key={d.cust_id} className={d.cust_has_debt ? "table-danger" : (d.cust_monthly_serv_pending ? "table-warning" : "")}
                         role="button" onClick={() => navigate(`/customer-details/${d.cust_id}`, {state: {customer: d}})}
                     >
                        
