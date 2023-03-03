@@ -111,11 +111,10 @@ function CustomerDebtsPaginated({customer}) {
                                                         // update debt status
                                                         const auxCurrentDebts = currentDebts.map(d => {
                                                             if (d.debt_id === item.debt_id) {
-                                                                //const dCopy = {...d, debt_cancelled: !item.debt_cancelled}
-                                                                d.debt_cancelled = !item.debt_cancelled; // modifica d?
-                                                                setDebtToChangeStatus(d);
-                                                                return d;
-                                                                //return dCopy;
+                                                                const dCopy = {...d, debt_cancelled: !item.debt_cancelled}
+                                                                //d.debt_cancelled = !item.debt_cancelled; // modifica d?
+                                                                setDebtToChangeStatus(dCopy);
+                                                                return dCopy;
                                                             }
                                                             return d;
                                                         }); 

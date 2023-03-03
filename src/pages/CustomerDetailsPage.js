@@ -44,8 +44,6 @@ function CustomerDetailsPage() {
           } catch (error) {
             console.log(error);
             alert(error);
-            // setErrorMsg(`Un error ha ocurrido, pruebe recargar la página. 
-            //              Descripción: ${error.message}`);
           }  
           })(); 
       }, [cust_active]);
