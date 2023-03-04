@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function CustomerDebtsPaginated({customer}) {
+function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
 
     const [currentDebts, setCurrentDebts] = useState([]);
     const [loadingDebts, setLoadingDebts] = useState(false);
@@ -14,6 +14,8 @@ function CustomerDebtsPaginated({customer}) {
         const monthString = months[parseInt(dateString.substring(5, 7)) - 1];
         return monthString;
     }     
+
+    console.log("Renderizado de CustomerDebtsPaginated");
 
     useEffect(() => {
 
@@ -70,9 +72,11 @@ function CustomerDebtsPaginated({customer}) {
 
     return (
         <>
-        <h3>Debts List</h3>
-        { loadingDebts ? <h3>Loading debts</h3> :   
-             
+        { loadingDebts ? 
+            <div class="spinner-border text-warning float-start" role="status">
+                <span class="sr-only"></span>
+            </div>
+        :      
             <div className='mt-3'>
                 <table className="table table-striped table-light table-sm table-hover">
                     <thead>
@@ -122,7 +126,7 @@ function CustomerDebtsPaginated({customer}) {
                                                     }
                                                 }}
                                                 onChange = {() => {
-
+                                                    updateCustomerFromDebtsBool();
                                                 }}
                                             />
                                         </td>

@@ -79,7 +79,6 @@ function CustomersPaginated({ itemsPerPage, thereAreCustomersWithDebt }) {
           response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/CustomersAPI/List?cust_active=${activeCustomersBool}&cust_has_debt=${thereAreCustomersWithDebt}&page_number=${currentPage}&page_size=${itemsPerPage}`);
         }
         const json = await response.json();
-        // console.log(json.SDTCustomers);
         setCurrentCustomers(json.SDTCustomers); 
         setTotalPages(json.TotalPages);
         setLoading(false);
