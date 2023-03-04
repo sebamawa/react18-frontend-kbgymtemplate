@@ -6,9 +6,7 @@ import CustomerInvoicesPaginated from "../components/CustomerInvoicesPaginated";
 export function CustomerInvoicesPage (updateInvoicesList) {
     const location = useLocation();
     const { customer } = location.state;
-
-    // console.log(customer);
-
+    
     return (
         <>
          {/* <header className="App-header"> */}

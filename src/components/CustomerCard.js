@@ -9,8 +9,6 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
     const [firstRender, setFirstRender] = useState(false); 
     const [loadingCustomer, setLoadingCustomer] = useState(false);
 
-    console.log("Renderizado de CustomerCard");
-
     useEffect(() => {
 
         (async() => {   
@@ -76,8 +74,8 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
      return (
          <>
          {loadingCustomer ? 
-            <div class="spinner-border text-warning float-start" role="status">
-                <span class="sr-only"></span>
+            <div className="spinner-border text-warning float-start" role="status">
+                <span className="sr-only"></span>
             </div>
         :
         (
@@ -89,7 +87,7 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
                 <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
                 {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt ? "bg-danger" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
                 <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4>
-                <div class="form-check">
+                <div className="form-check">
                     {!loadingChangeStatus
                     ?
                     <input className="form-check-input" type="checkbox" value={cust_active} id="cust_active" checked={cust_active} 

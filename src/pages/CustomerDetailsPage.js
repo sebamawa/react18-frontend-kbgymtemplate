@@ -10,9 +10,7 @@ function CustomerDetailsPage() {
     const { customer } = location.state;
 
     const [updateCustomerFromDebtsBool, setUpdateCustomerFromDebts] = useState(false);
-
-    console.log("Renderizado de CustomerDetailsPage");
-
+    
     return (
         <>
             <div className="row">

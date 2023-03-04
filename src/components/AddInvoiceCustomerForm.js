@@ -174,7 +174,7 @@ function AddinvoiceCustomerForm(
                                             setInvitem_descrip(actualServ.serv_descrip);
                                             setInvitem_price(actualServ.serv_price);
                                 }}>
-                                    {loadingServices ? <option value="" readonly>Loading...</option> :
+                                    {loadingServices ? <option value="" readOnly>Loading...</option> :
                                     
                                     services.map((service) => {
                                         return (

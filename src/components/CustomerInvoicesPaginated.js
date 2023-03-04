@@ -80,10 +80,8 @@ function CustomerInvoicesPaginated({ customer, itemsPerPage }) {
                 loadingInvoices ? 
                     <div className="row">  
                         <div className="col-6"><h3 className="float-end">Loading invoices</h3></div>
-                        <div className="col-6">
                         <div class="spinner-border text-warning float-start" role="status">
                             <span class="sr-only"></span>
-                        </div>
                         </div>
                     </div> 
                     :

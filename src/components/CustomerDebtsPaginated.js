@@ -15,8 +15,6 @@ function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
         return monthString;
     }     
 
-    console.log("Renderizado de CustomerDebtsPaginated");
-
     useEffect(() => {
 
         (async() => {   
@@ -61,7 +59,9 @@ function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
 
            const json = await response.json();
            
+           updateCustomerFromDebtsBool();
            setLoadingDebtUpdated(false);
+           
          } catch (error) {
            console.log(error);
            alert(error);           
@@ -73,9 +73,12 @@ function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
     return (
         <>
         { loadingDebts ? 
+        <>
+            <div className="col-6"><h3 className="float-end">Loading Debts</h3></div>
             <div class="spinner-border text-warning float-start" role="status">
                 <span class="sr-only"></span>
             </div>
+        </>    
         :      
             <div className='mt-3'>
                 <table className="table table-striped table-light table-sm table-hover">
@@ -126,7 +129,7 @@ function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
                                                     }
                                                 }}
                                                 onChange = {() => {
-                                                    updateCustomerFromDebtsBool();
+                                                    
                                                 }}
                                             />
                                         </td>
