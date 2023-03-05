@@ -33,7 +33,7 @@ function DisplayItems({ currentItems, thereAreCustomersWithDebt }) {
             <tbody>
                 {currentItems && currentItems.map((d)=> 
 
-                    <tr key={d.cust_id} className={d.cust_has_debt ? "table-danger" : (d.cust_monthly_serv_pending || (d.cust_pay_out_of_period && substractDaysFromDate(d.cust_payday_limit, 3) < (new Date()).toISOString().substring(0, 10)) ? "table-warning" : "")}
+                    <tr key={d.cust_id} className={d.cust_has_debt ? "table-danger" : (d.cust_monthly_serv_pending ? "table-warning" : "")}
                         role="button" onClick={() => navigate(`/customer-details/${d.cust_id}`, {state: {customer: d}})}
                     >
                        

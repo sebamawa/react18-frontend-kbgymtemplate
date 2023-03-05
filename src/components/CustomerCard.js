@@ -35,7 +35,7 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
            });
 
            const json = await response.json();
-           setCustomer(json);
+           setCustomer(json.SDTCustomer);
            //console.log(json);
            
            setLoadingChangeStatus(false);
