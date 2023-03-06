@@ -14,6 +14,7 @@ import { CustomerInvoicesPage } from './pages/CustomerInvoicesPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import CustomerDetailsPage from './pages/CustomerDetailsPage';
 import { useEffect } from 'react';
+import MonthlySummaries from './components/Summaries/MonthlySummaries';
 
 function App() {
 
@@ -66,6 +67,10 @@ function App() {
                 onClick={() => updateCustomersWithDebtCount()}      
           >Customers</Link>
 
+          <Link to="/monthly-summaries" 
+                className="navbar-brand h3 text-white"    
+          >Summaries</Link>          
+
           <Link to="/customers" className="navbar-brand h3 text-white mx-auto" >      
             <button type="button" 
                 className={"btn " + (customersWithDebt>0 ? "visible " : "invisible ") +"btn mt-3 " + (thereAreCustomersWithDebt ?  "btn-danger" : "btn-primary")}
@@ -93,6 +98,7 @@ function App() {
             <Route path="/customers" element={<CustomersPage thereAreCustomersWithDebt={thereAreCustomersWithDebt}/>} />
             <Route path="/customer-details/:cust_id" element={<CustomerDetailsPage />} />
             <Route path="/customer_invoices" element={<CustomerInvoicesPage />} />
+            <Route path="/monthly-summaries" element={<MonthlySummaries />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div> 
