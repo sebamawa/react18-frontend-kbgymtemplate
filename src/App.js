@@ -14,7 +14,7 @@ import { CustomerInvoicesPage } from './pages/CustomerInvoicesPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import CustomerDetailsPage from './pages/CustomerDetailsPage';
 import { useEffect } from 'react';
-import MonthlySummaries from './components/Summaries/MonthlySummaries';
+import MonthlySummariesPage from './pages/Summaries/MonthlySummaries';
 
 function App() {
 
@@ -98,7 +98,7 @@ function App() {
             <Route path="/customers" element={<CustomersPage thereAreCustomersWithDebt={thereAreCustomersWithDebt}/>} />
             <Route path="/customer-details/:cust_id" element={<CustomerDetailsPage />} />
             <Route path="/customer_invoices" element={<CustomerInvoicesPage />} />
-            <Route path="/monthly-summaries" element={<MonthlySummaries />} />
+            <Route path="/monthly-summaries" element={<MonthlySummariesPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div> 

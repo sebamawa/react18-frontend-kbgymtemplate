@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function MonthlySummaries({}) {
 
-    
+    const [monthlySummaries, setMonthlySummaries] = useState([]);
+    const [loadingSummaries, setLoadingSummaries] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -13,24 +14,56 @@ function MonthlySummaries({}) {
                 //     return;
                 // }
     
-               // setLoadingCustomer(true);
+               setLoadingSummaries(true);
                
                const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/MonthlySummariesAPI/List`);
                    
                const json = await response.json();
-               console.log(json);
-               //setCustomer(json);
+               //console.log(json);
+               setMonthlySummaries(json);
                
-               //setLoadingCustomer(false);
+               setLoadingSummaries(false);
              } catch (error) {
                console.log(error);
                alert(error);
              }            
         })();
-    });
+    }, []);
 
     return (
-        <h3>Monthly Summaries component</h3>
+        <>
+        {loadingSummaries ?         
+            <div className="spinner-border text-warning mx-auto" role="status">
+                <span className="sr-only"></span>
+            </div>
+        :
+        <table className={'table table-dark table-striped-columns table-hover'}>
+            <thead>
+                <tr>
+                    <th scope='col'>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {monthlySummaries && monthlySummaries.map((d)=> 
+                    <>
+                        <tr>
+                            <td><h3>{d.Year}</h3></td>
+                            {d.MonthItem.map((m) => 
+                                <td>{m.MonthName}</td>                     
+                            )} 
+                        </tr>
+                        <tr>
+                            <td></td>
+                            {d.MonthItem.map((m) => 
+                                <td>{m.MonthTotal}</td>                     
+                            )} 
+                        </tr>
+                    </>
+                )}
+            </tbody>
+        </table>
+        }
+    </>
     );
 }
 
