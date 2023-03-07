@@ -53,7 +53,7 @@ function MonthlySummaries({}) {
                             )} 
                         </tr>
                         <tr>
-                            <td></td>
+                            <td>Total Month</td>
                             {d.MonthItem.map((m) => 
                                 <td>{m.MonthTotal}</td>                     
                             )} 
