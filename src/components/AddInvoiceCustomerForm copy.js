@@ -10,10 +10,6 @@ function AddinvoiceCustomerForm(
     const [loadingServices, setLoadingServices] = useState(false);
     const [selectedService, setSelectedService] = useState(0);
 
-    const [products, setProducts] = useState([]);
-
-    const [changeBeetweenServiceProduct, setChangeBeetweenServiceProduct] = useState(true);
-
     const [itemsInvoice, setItemsInvoice] = useState([]);
     const [countItemsInvoice, setCountItemsInvoice] = useState(0);
 
@@ -141,22 +137,6 @@ function AddinvoiceCustomerForm(
     })(); 
     }, []);   
 
-    useEffect(() => {
-        (async() => {   
-         try {
-           //setLoadingServices(true);
-           
-           //const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/ProductsAPI/List?prod_type_id=2`);
-          
-           //const json = await response.json();
-           console.log("Llamando a ProductsAPI/List");
-           //setServices(json.SDTServices);
-         } catch (error) {
-           console.log(error);
-         }  
-   })(); 
-   }, []);     
-
     return (
         <div className="form-background rounded"> 
 
@@ -186,18 +166,6 @@ function AddinvoiceCustomerForm(
                         
                         <div className="col-6">
                             <div className="form-group">
-                                <select className="form-select form-control"
-                                        onChange={ e => {
-                                            setChangeBeetweenServiceProduct(!changeBeetweenServiceProduct);
-                                        }}>
-                                
-                                    <option value="1">Services</option>
-                                    <option value="2">Products</option>
-                                </select>
-                            </div>
-
-                            { changeBeetweenServiceProduct ?                
-                            <div className="form-group">
                                 <label for="serv_id">Service</label>
                                 <select className="form-select form-control" id="serv_id" 
                                         onChange={ e => {
@@ -216,30 +184,7 @@ function AddinvoiceCustomerForm(
                                     {/* <option value='0' key='0' >None</option>  */}
                                 </select>   
                             </div>
-                            :
-                            <div className="form-group">
-                                <label for="prod_id">Product</label>
-                                <select className="form-select form-control" id="prod_id" 
-                                        onChange={ e => {
-                                            //const actualServ = services.find((serv) => serv.serv_id === parseInt(e.target.value));
-                                            //setSelectedService(actualServ);
-                                            //setInvitem_descrip(actualServ.serv_descrip);
-                                            // setInvitem_price(actualServ.serv_price);
-                                }}>
-                                    {/* {loadingServices ? <option value="" readOnly>Loading...</option> : */}
-                                    
-                                    {/* products.map((prod) => {
-                                        return (
-                                            <option value={prod.prod_id} key={prod.prod_id}>{prod.prod_descrip}</option>
-                                        );
-                                    })} */}
-                                    <option value='0'>Product 1</option> 
-                                    <option value='1'>Product 2</option> 
-                                </select>   
-                            </div> 
-                            }                           
                         </div>
-                    
                         <div className="col-6">
                         <div className="col-1 mx-auto">
                             <i className="bi bi-plus-circle" style={{fontSize:2+'rem'}} disabled={loadingServices} role="button" onClick={() => {
