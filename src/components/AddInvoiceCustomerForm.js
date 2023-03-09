@@ -51,6 +51,9 @@ function AddinvoiceCustomerForm(
             s_id = 0;
         }
 
+        console.log(s_id);
+        console.log(p_id);
+
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, 
             {
@@ -63,8 +66,6 @@ function AddinvoiceCustomerForm(
                 invitem_price: parseInt(invitem_price),
                 invitem_quantity: 1
             }]); 
-
-        console.log(itemsInvoice);    
 
         const total = inv_total + parseInt(invitem_price);
         setInv_total(total); // update total TODO: * serv_quantity 
@@ -101,8 +102,10 @@ function AddinvoiceCustomerForm(
 
         // remuevo id de los objetos del array de items
         const itemsToSend = itemsInvoice.map(({id, ...keepAttrs}) => keepAttrs);
+
+        console.log(itemsToSend);
         
-        try {
+         try {
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/Insert`, {
                 method: 'POST',
                 headers: { 
