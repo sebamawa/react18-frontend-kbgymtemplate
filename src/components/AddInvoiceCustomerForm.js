@@ -8,9 +8,10 @@ function AddinvoiceCustomerForm(
 
     const [services, setServices] = useState([]);
     const [loadingServices, setLoadingServices] = useState(false);
-    const [selectedService, setSelectedService] = useState(0);
+    const [selectedService, setSelectedService] = useState({});
 
     const [products, setProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState({});
 
     const [changeBeetweenServiceProduct, setChangeBeetweenServiceProduct] = useState(true);
 
@@ -38,17 +39,32 @@ function AddinvoiceCustomerForm(
             alert(`You must enter a value greater than zero for the service/product.`);
             return
         }
+
+        // calculate serv_id or prod_id
+        let s_id = 0;
+        let p_id = 0;
+        if (changeBeetweenServiceProduct) { // changeBeetweenServiceProduct = true => service
+            s_id = selectedService.serv_descrip === invitem_descrip ? selectedService.serv_id : 0;
+            p_id = 0;
+        } else {
+            p_id = selectedProduct.prod_descrip === invitem_descrip ? selectedProduct.prod_id : 0;
+            s_id = 0;
+        }
+
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, 
             {
                 id: countItemsInvoice, // agrego id de linea a item (para agregado/borrado en el front)
 
                 // mejorar esta condicion para enviar el serv_id al backend en caso de que corresponda
-                invitem_serv_id: selectedService.serv_descrip === invitem_descrip ? selectedService.serv_id : 0,
+                invitem_serv_id: s_id,
+                invitem_prod_id: p_id,
                 invitem_descrip: invitem_descrip,
                 invitem_price: parseInt(invitem_price),
                 invitem_quantity: 1
             }]); 
+
+        console.log(itemsInvoice);    
 
         const total = inv_total + parseInt(invitem_price);
         setInv_total(total); // update total TODO: * serv_quantity 
@@ -146,16 +162,20 @@ function AddinvoiceCustomerForm(
          try {
            //setLoadingServices(true);
            
-           //const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/ProductsAPI/List?prod_type_id=2`);
+           const response = await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/APIProducts/List?prod_type_id=2`);
           
-           //const json = await response.json();
-           console.log("Llamando a ProductsAPI/List");
-           //setServices(json.SDTServices);
+           const json = await response.json();
+           //console.log(json);
+           setProducts(json.SDTProducts);
+           const firstProd = json.SDTProducts[0];
+           setSelectedProduct(firstProd);
          } catch (error) {
            console.log(error);
          }  
    })(); 
-   }, []);     
+   }, []);   
+   
+   
 
     return (
         <div className="form-background rounded"> 
@@ -189,6 +209,13 @@ function AddinvoiceCustomerForm(
                                 <select className="form-select form-control"
                                         onChange={ e => {
                                             setChangeBeetweenServiceProduct(!changeBeetweenServiceProduct);
+                                            if (changeBeetweenServiceProduct) {
+                                                setInvitem_descrip(selectedProduct.prod_descrip);
+                                                setInvitem_price(selectedProduct.prod_price);
+                                            } else {
+                                                setInvitem_descrip(selectedService.serv_descrip);
+                                                setInvitem_price(selectedService.serv_price);
+                                            }
                                         }}>
                                 
                                     <option value="1">Services</option>
@@ -221,20 +248,18 @@ function AddinvoiceCustomerForm(
                                 <label for="prod_id">Product</label>
                                 <select className="form-select form-control" id="prod_id" 
                                         onChange={ e => {
-                                            //const actualServ = services.find((serv) => serv.serv_id === parseInt(e.target.value));
-                                            //setSelectedService(actualServ);
-                                            //setInvitem_descrip(actualServ.serv_descrip);
-                                            // setInvitem_price(actualServ.serv_price);
+                                            const actualProd = products.find((prod) => prod.prod_id === parseInt(e.target.value));
+                                            setSelectedProduct(actualProd);
+                                            setInvitem_descrip(actualProd.prod_descrip);
+                                            setInvitem_price(actualProd.prod_price);
                                 }}>
                                     {/* {loadingServices ? <option value="" readOnly>Loading...</option> : */}
                                     
-                                    {/* products.map((prod) => {
+                                    {products.map((prod) => {
                                         return (
                                             <option value={prod.prod_id} key={prod.prod_id}>{prod.prod_descrip}</option>
                                         );
-                                    })} */}
-                                    <option value='0'>Product 1</option> 
-                                    <option value='1'>Product 2</option> 
+                                    })} 
                                 </select>   
                             </div> 
                             }                           
@@ -324,7 +349,7 @@ function AddinvoiceCustomerForm(
             </div>  
             <hr></hr>
 
-            <p>Total: {inv_total}</p>     
+            <p>Total: $ {inv_total}</p>     
             {loadingInvoiceInserted ?
                 <div class="spinner-border" role="status">
                             <span class="sr-only"></span>
