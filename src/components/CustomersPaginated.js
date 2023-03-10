@@ -88,6 +88,7 @@ function CustomersPaginated({ itemsPerPage, thereAreCustomersWithDebt }) {
         }
         const json = await response.json();
         setCurrentCustomers(json.SDTCustomerColl); 
+        //console.log(json.SDTCustomerColl);
         setTotalPages(json.TotalPages);
         setLoading(false);
         setErrorMsg("");

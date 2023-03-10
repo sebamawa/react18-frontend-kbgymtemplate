@@ -177,8 +177,6 @@ function AddinvoiceCustomerForm(
          }  
    })(); 
    }, []);   
-   
-   
 
     return (
         <div className="form-background rounded"> 
@@ -221,8 +219,8 @@ function AddinvoiceCustomerForm(
                                             }
                                         }}>
                                 
-                                    <option value="1">Services</option>
-                                    <option value="2">Products</option>
+                                    <option value="1" key={1}>Services</option>
+                                    <option value="2" key={2}>Products</option>
                                 </select>
                             </div>
 
@@ -352,7 +350,7 @@ function AddinvoiceCustomerForm(
             </div>  
             <hr></hr>
 
-            <p>Total: $ {inv_total}</p>     
+            <h3>Total: $ {inv_total}</h3>     
             {loadingInvoiceInserted ?
                 <div class="spinner-border" role="status">
                             <span class="sr-only"></span>

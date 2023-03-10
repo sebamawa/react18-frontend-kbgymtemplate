@@ -36,7 +36,7 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
 
            const json = await response.json();
            setCustomer(json.SDTCustomer);
-           //console.log(json);
+           // console.log(json.SDTCustomer);
            
            setLoadingChangeStatus(false);
          } catch (error) {
@@ -79,13 +79,13 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
             </div>
         :
         (
-            <div className={"card " + (customer.cust_has_debt ? "bg-warning border border-5 border-danger" : "")}>
+            <div className={"card " + (customer.cust_has_debt ? "bg-danger border border-5 border-danger" : (customer.cust_monthly_serv_pending ? "bg-warning" : ""))}>
             <img src={customer.cust_image}  alt={customer.cust_fullname}/>
             <div className={"card-body"}>
                 <h5 className="card-title text-black">{customer.cust_fullname}</h5> 
                 <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                 <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
-                {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt ? "bg-danger" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
+                {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt || customer.cust_monthly_serv_pending ? "bg-info" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
                 <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4>
                 <div className="form-check">
                     {!loadingChangeStatus
