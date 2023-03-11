@@ -23,6 +23,7 @@ function AddinvoiceCustomerForm(
     const[invitem_descrip, setInvitem_descrip] = useState('');
     const[invitem_descrip_disabled, setInvitem_descrip_disabled] = useState(true);
     const [invitem_price, setInvitem_price] = useState(0);
+    const [invitem_type, setInvitem_type] = useState(1); // select -> options {1 = Services, 2 = Products}
 
     const today = (new Date()).toISOString().substring(0, 10);
     //const today = (new Date()).toLocaleDateString();   //toISOString().substring(0, 10);
@@ -51,8 +52,9 @@ function AddinvoiceCustomerForm(
             s_id = 0;
         }
 
-        console.log(s_id);
-        console.log(p_id);
+        // if (s_id === 0 && p_id === 0) { // item customized
+        //     return;
+        // }
 
         setCountItemsInvoice(countItemsInvoice + 1); // 1 linea de factura mas
         setItemsInvoice([...itemsInvoice, 
@@ -62,6 +64,7 @@ function AddinvoiceCustomerForm(
                 // mejorar esta condicion para enviar el serv_id al backend en caso de que corresponda
                 invitem_serv_id: s_id,
                 invitem_prod_id: p_id,
+                invitem_type: invitem_type,
                 invitem_descrip: invitem_descrip,
                 invitem_price: parseInt(invitem_price),
                 invitem_quantity: 1
@@ -105,6 +108,7 @@ function AddinvoiceCustomerForm(
 
         console.log(itemsToSend);
         
+        return;
          try {
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/Insert`, {
                 method: 'POST',
@@ -211,9 +215,13 @@ function AddinvoiceCustomerForm(
                                         onChange={ e => {
                                             setChangeBeetweenServiceProduct(!changeBeetweenServiceProduct);
                                             if (changeBeetweenServiceProduct) {
+                                                console.log("Producto presente");
+                                                setInvitem_type(2);
                                                 setInvitem_descrip(selectedProduct.prod_descrip);
                                                 setInvitem_price(selectedProduct.prod_price);
                                             } else {
+                                                console.log("Servicio presente");
+                                                setInvitem_type(1);
                                                 setInvitem_descrip(selectedService.serv_descrip);
                                                 setInvitem_price(selectedService.serv_price);
                                             }
