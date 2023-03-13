@@ -14,7 +14,7 @@ function CustomerDetailsPage() {
     return (
         <>
             <div className="row">
-                <div className="col-2">
+                <div className="col-3">
                     <h3>Customer</h3>
                     <CustomerCardPage 
                         customer = {customer}
@@ -22,13 +22,13 @@ function CustomerDetailsPage() {
                     />
                 </div>
                 <div className="col-6">
-                    <h3>Invoices List</h3>
+                    {/* <h3>Invoices List</h3> */}
                     <CustomerInvoicesPage
                         // cust_id={parms.cust_id}
                         customer = {customer}
                     />
                 </div>
-                <div className="col-4">
+                <div className="col-3">
                     <h3>Debts List</h3>
                     < CustomerDebtsPage
                         customer = {customer}

@@ -108,7 +108,6 @@ function AddinvoiceCustomerForm(
 
         console.log(itemsToSend);
         
-        return;
          try {
             const response =  await fetch(`http://192.168.1.5:8080/KBGymTemplateJavaMySQL/InvoicesAPI/Insert`, {
                 method: 'POST',
@@ -209,68 +208,71 @@ function AddinvoiceCustomerForm(
                     <legend><h5>Add Items</h5></legend> */}
                     <div className="row">
                         
-                        <div className="col-6">
+                        <div className="col-6">                          
                             <div className="form-group">
                                 <select className="form-select form-control"
-                                        onChange={ e => {
-                                            setChangeBeetweenServiceProduct(!changeBeetweenServiceProduct);
-                                            if (changeBeetweenServiceProduct) {
-                                                console.log("Producto presente");
-                                                setInvitem_type(2);
-                                                setInvitem_descrip(selectedProduct.prod_descrip);
-                                                setInvitem_price(selectedProduct.prod_price);
-                                            } else {
-                                                console.log("Servicio presente");
-                                                setInvitem_type(1);
-                                                setInvitem_descrip(selectedService.serv_descrip);
-                                                setInvitem_price(selectedService.serv_price);
-                                            }
-                                        }}>
-                                
-                                    <option value="1" key={1}>Services</option>
-                                    <option value="2" key={2}>Products</option>
+                                            onChange={ e => {
+                                                setChangeBeetweenServiceProduct(!changeBeetweenServiceProduct);
+                                                if (changeBeetweenServiceProduct) {
+                                                    setInvitem_type(2);
+                                                    setInvitem_descrip(selectedProduct.prod_descrip);
+                                                    setInvitem_price(selectedProduct.prod_price);
+                                                } else {
+                                                    setInvitem_type(1);
+                                                    setInvitem_descrip(selectedService.serv_descrip);
+                                                    setInvitem_price(selectedService.serv_price);
+                                                }
+                                            }}>
+                                    
+                                        <option value="1" key={1}>Services</option>
+                                        <option value="2" key={2}>Products</option>
                                 </select>
                             </div>
 
-                            { changeBeetweenServiceProduct ?                
-                            <div className="form-group">
-                                <label for="serv_id">Service</label>
-                                <select className="form-select form-control" id="serv_id" 
-                                        onChange={ e => {
-                                            const actualServ = services.find((serv) => serv.serv_id === parseInt(e.target.value));
-                                            setSelectedService(actualServ);
-                                            setInvitem_descrip(actualServ.serv_descrip);
-                                            setInvitem_price(actualServ.serv_price);
-                                }}>
-                                    {loadingServices ? <option value="" readOnly>Loading...</option> :
-                                    
-                                    services.map((service) => {
-                                        return (
-                                            <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
-                                        );
-                                    })}
-                                    {/* <option value='0' key='0' >None</option>  */}
-                                </select>   
-                            </div>
-                            :
-                            <div className="form-group">
-                                <label for="prod_id">Product</label>
-                                <select className="form-select form-control" id="prod_id" 
-                                        onChange={ e => {
-                                            const actualProd = products.find((prod) => prod.prod_id === parseInt(e.target.value));
-                                            setSelectedProduct(actualProd);
-                                            setInvitem_descrip(actualProd.prod_descrip);
-                                            setInvitem_price(actualProd.prod_price);
-                                }}>
-                                    {/* {loadingServices ? <option value="" readOnly>Loading...</option> : */}
-                                    
-                                    {products.map((prod) => {
-                                        return (
-                                            <option value={prod.prod_id} key={prod.prod_id}>{prod.prod_descrip}</option>
-                                        );
-                                    })} 
-                                </select>   
-                            </div> 
+                            { (selectedService.serv_descrip === invitem_descrip ||
+                                selectedProduct.prod_descrip === invitem_descrip) 
+                                ? (
+                                    changeBeetweenServiceProduct ?                
+                                    <div className="form-group">
+                                        <label for="serv_id">Service</label>
+                                        <select className="form-select form-control" id="serv_id" 
+                                                onChange={ e => {
+                                                    const actualServ = services.find((serv) => serv.serv_id === parseInt(e.target.value));
+                                                    setSelectedService(actualServ);
+                                                    setInvitem_descrip(actualServ.serv_descrip);
+                                                    setInvitem_price(actualServ.serv_price);
+                                        }}>
+                                            {loadingServices ? <option value="" readOnly>Loading...</option> :
+                                            
+                                            services.map((service) => {
+                                                return (
+                                                    <option value={service.serv_id} key={service.serv_id}>{service.serv_descrip}</option>
+                                                );
+                                            })}
+                                            {/* <option value='0' key='0' >None</option>  */}
+                                        </select>   
+                                    </div>
+                                :
+                                <div className="form-group">
+                                    <label for="prod_id">Product</label>
+                                    <select className="form-select form-control" id="prod_id" 
+                                            onChange={ e => {
+                                                const actualProd = products.find((prod) => prod.prod_id === parseInt(e.target.value));
+                                                setSelectedProduct(actualProd);
+                                                setInvitem_descrip(actualProd.prod_descrip);
+                                                setInvitem_price(actualProd.prod_price);
+                                    }}>
+                                        {/* {loadingServices ? <option value="" readOnly>Loading...</option> : */}
+                                        
+                                        {products.map((prod) => {
+                                            return (
+                                                <option value={prod.prod_id} key={prod.prod_id}>{prod.prod_descrip}</option>
+                                            );
+                                        })} 
+                                    </select>   
+                                </div> 
+                            )
+                            : null
                             }                           
                         </div>
                     
@@ -287,7 +289,7 @@ function AddinvoiceCustomerForm(
                                 <div className="form-group">
                                         <textarea 
                                             class="form-control" id="invitem_descrip" 
-                                            rows="3" 
+                                            rows="2" 
                                             disabled = {invitem_descrip_disabled}
                                             value={invitem_descrip}
                                             placeholder={"Descripction of service or product (required)"}
@@ -334,8 +336,7 @@ function AddinvoiceCustomerForm(
                                         
                {/* </fieldset>  */}
            
-
-               <button type="button" class="btn btn-success" disabled={itemsInvoice.length === 0 || loadingServices} onClick={submit}>Register Invoice</button>             
+               <button type="button" class="btn btn-success mt-4" disabled={itemsInvoice.length === 0 || loadingServices} onClick={submit}>Register Invoice</button>             
             </form> 
 
             <div className="row">
@@ -358,7 +359,7 @@ function AddinvoiceCustomerForm(
             </div>  
             <hr></hr>
 
-            <h3>Total: $ {inv_total}</h3>     
+            <h3 className="bg-warning text-success rounded">Total: $ {inv_total}</h3>     
             {loadingInvoiceInserted ?
                 <div class="spinner-border" role="status">
                             <span class="sr-only"></span>

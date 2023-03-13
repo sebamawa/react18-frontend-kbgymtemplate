@@ -9,7 +9,7 @@ function CustomerDebtsPaginated({customer, updateCustomerFromDebtsBool}) {
     const [loadingDebtUpdated, setLoadingDebtUpdated] = useState(false);
 
     // to render the month name
-    const months = ["Enero", "Febrero", "Merzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const getMonth = (dateString) => { // dateString: "YYYY-MM-DD"
         const monthString = months[parseInt(dateString.substring(5, 7)) - 1];
         return monthString;

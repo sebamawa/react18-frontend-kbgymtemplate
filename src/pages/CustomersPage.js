@@ -5,7 +5,7 @@ export function CustomersPage({cust_id, thereAreCustomersWithDebt}) {
         <>
             <div>
                 <CustomersPaginated 
-                    itemsPerPage={5} 
+                    itemsPerPage={7} 
                     cust_id={cust_id}
                     thereAreCustomersWithDebt={thereAreCustomersWithDebt}
                 />

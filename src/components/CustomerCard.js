@@ -85,8 +85,20 @@ function CustomerCard({customerInit, updateCustomerFromDebtsBool}) {
                 <h5 className="card-title text-black">{customer.cust_fullname}</h5> 
                 <h6 className="text-black">{`Identification: ${customer.cust_identification}`}</h6>
                 <h6 className="text-black">{`Phone: ${customer.cust_phone}`}</h6>
-                {customer.cust_active ? <h6 className={"text-black rounded " + (customer.cust_has_debt || customer.cust_monthly_serv_pending ? "bg-info" : "bg-warning")}>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6> : null}
-                <h4 className="text-black rounded "><i className={customer.cust_has_debt ? "bi bi-exclamation-triangle text-danger" : ""}></i></h4>
+                {customer.cust_active ? 
+                    (<div className={"text-black rounded pt-2 " + (customer.cust_has_debt || customer.cust_monthly_serv_pending ? "bg-info" : "bg-warning")}> 
+                        <h6>{"Payday limit: " + (customer.cust_pay_out_of_period ? customer.cust_payday_limit : "before 10")}</h6>
+                        <i 
+                            className="bi bi-pencil" 
+                            role='button' 
+                            style={{fontSize: 1.0+'rem', color: 'black'}}>
+                        </i>
+                    </div>)
+                    : null
+                }
+                {customer.cust_has_debt ?
+                    <h4 className="text-black rounded "><i className="bi bi-exclamation-triangle text-info"></i></h4>
+                : null }
                 <div className="form-check">
                     {!loadingChangeStatus
                     ?
